@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chief of Staff · Guia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#F9FAFB; --white:#fff;
+    --accent:#ED7D31; --accent2:#D96B22; --accent-light:#FDE7D6; --accent-lighter:#FEF5EE; --accent-border:#F5C9A6; --accent-text:#8A4415;
+    --green:#059669; --green-bg:#ECFDF5; --green-border:#A7F3D0; --green-text:#065F46;
+    --yellow:#D97706; --red:#DC2626;
+    --text:#111827; --text2:#6B7280; --text3:#9CA3AF; --text4:#D1D5DB;
+    --border:#E5E7EB; --border2:#D1D5DB;
+    --shadow-xs:0 1px 2px rgba(0,0,0,.04); --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  }
+  body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .layout{display:flex;min-height:100vh}
+
+  .sidebar{width:256px;min-width:256px;background:var(--white);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+  .sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+  .sidebar-header{padding:20px 16px 14px;border-bottom:1px solid var(--border)}
+  .sidebar-header h2{font-size:.88rem;font-weight:700;letter-spacing:-.02em}
+  .sidebar-header p{font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;font-weight:500;margin-top:2px}
+  .nav-group{padding:12px 0 4px}
+  .nav-group-title{padding:2px 16px 6px;font-size:.58rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text3)}
+  .nav-item{display:flex;align-items:center;gap:8px;padding:7px 12px 7px 16px;cursor:pointer;transition:all .15s;text-decoration:none;color:var(--text2);font-size:.78rem;font-weight:450;border-left:2px solid transparent}
+  .nav-item:hover{background:var(--bg);color:var(--text)}
+  .nav-item.active{background:var(--accent-lighter);color:var(--accent);border-left-color:var(--accent);font-weight:600}
+  .nav-item .ni-num{font-size:.62rem;font-weight:600;color:var(--text3);min-width:17px;font-variant-numeric:tabular-nums}
+  .nav-item.active .ni-num{color:var(--accent)}
+  .nav-item .ni-check{margin-left:auto;font-size:.62rem;color:var(--green);opacity:0;transition:opacity .2s;flex-shrink:0}
+  .nav-item.completed .ni-check{opacity:1}
+  .sidebar-progress{padding:14px 16px;border-top:1px solid var(--border);margin-top:auto}
+  .sp-label{font-size:.62rem;color:var(--text3);font-weight:500;margin-bottom:6px}
+  .sp-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+  .sp-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s ease;width:0}
+
+  .main{flex:1;padding:0 36px 60px;max-width:780px;min-width:0}
+  .section{display:none;animation:fadeIn .25s ease}
+  .section.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+  .sec-head{padding:24px 0 6px}
+  .sec-title{font-size:1.1rem;font-weight:800;letter-spacing:-.03em;line-height:1.2;margin-bottom:3px}
+  .sec-title .snum{color:var(--accent)}
+  .sec-desc{font-size:.78rem;color:var(--text2);margin-bottom:8px}
+
+  .stepper{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;height:50px;margin:0 0 18px;overflow-x:auto}
+  .stepper::-webkit-scrollbar{height:0}
+  .stepper-node{display:flex;align-items:center;gap:5px;padding:0 4px;cursor:pointer;white-space:nowrap}
+  .stepper-node .sn-label{font-size:.72rem;font-weight:600;letter-spacing:-.01em;padding:6px 0;position:relative;color:var(--text4);transition:color .2s}
+  .stepper-node.completed .sn-label{color:var(--text)}
+  .stepper-node.active .sn-label{color:var(--accent)}
+  .stepper-node.active .sn-label::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);border-radius:2px 2px 0 0}
+  .stepper-node .sn-check{display:none;font-size:.6rem;color:var(--green)}
+  .stepper-node.completed .sn-check{display:inline}
+  .stepper-arrow{color:var(--text4);font-size:.65rem;padding:0 6px;flex-shrink:0}
+
+  .step{background:var(--white);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;box-shadow:var(--shadow-xs);overflow:hidden}
+  .step summary{list-style:none;display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;user-select:none}
+  .step summary::-webkit-details-marker{display:none}
+  .step .st-num{font-size:.62rem;font-weight:700;color:#fff;background:var(--accent);min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .step.done .st-num{background:var(--green)}
+  .step .st-title{font-size:.86rem;font-weight:700;letter-spacing:-.01em;flex:1}
+  .step .st-title small{display:block;font-size:.68rem;font-weight:400;color:var(--text2);margin-top:1px}
+  .step .st-time{font-size:.62rem;color:var(--text3);font-weight:500;white-space:nowrap}
+  .step .st-chev{font-size:.7rem;color:var(--text3);transition:transform .2s}
+  .step[open] .st-chev{transform:rotate(180deg)}
+  .step .st-done{display:none;font-size:.62rem;font-weight:700;color:var(--green);background:var(--green-bg);border:1px solid var(--green-border);border-radius:20px;padding:2px 8px;white-space:nowrap}
+  .step.done .st-done{display:inline}
+  .step.done .st-time{display:none}
+  .step-body{padding:2px 16px 16px;border-top:1px solid var(--border)}
+  .step-body > p{font-size:.76rem;color:var(--text2);line-height:1.55;margin:12px 0}
+
+  .instructions{display:flex;flex-direction:column;gap:4px;margin:10px 0 14px}
+  .inst{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border)}
+  .inst-num{font-size:.56rem;font-weight:700;color:#fff;background:var(--accent);min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+  .inst-text{font-size:.76rem;color:var(--text);line-height:1.5;flex:1;min-width:0}
+  .inst-text strong{font-weight:600}
+  .field{display:inline-block;background:#F3F4F6;padding:1px 6px;border-radius:4px;font-size:.68rem;font-weight:600;font-family:'SF Mono','JetBrains Mono',Menlo,monospace;border:1px solid var(--border);color:var(--text)}
+
+  .prompt-toggle{margin:10px 0}
+  .prompt-toggle summary{list-style:none;display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;color:var(--accent);background:var(--accent-lighter);border:1px solid var(--accent-border);border-radius:6px;padding:6px 12px;cursor:pointer;user-select:none}
+  .prompt-toggle summary::-webkit-details-marker{display:none}
+  .prompt-toggle summary::before{content:'▸';font-size:.7rem}
+  .prompt-toggle[open] summary::before{content:'▾'}
+  .prompt-toggle[open] summary{background:var(--accent-light)}
+  .copy-block{position:relative;background:#1F2937;color:#F3F4F6;border:1px solid #111827;border-radius:8px;padding:12px 14px 14px;margin:8px 0 4px;font-family:'SF Mono','JetBrains Mono',Menlo,monospace;font-size:.7rem;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+  .copy-block .label{font-family:'Inter',system-ui,sans-serif;font-size:.56rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#9CA3AF;margin-bottom:8px;display:block}
+  .copy-btn{position:absolute;top:8px;right:8px;background:var(--accent);border:1px solid var(--accent);color:#fff;padding:4px 11px;border-radius:5px;font-size:.62rem;font-weight:600;cursor:pointer;transition:all .15s;font-family:'Inter',system-ui,sans-serif}
+  .copy-btn:hover{background:var(--accent2)}
+  .copy-btn.copied{background:var(--green);border-color:var(--green)}
+
+  .tip-box{background:var(--accent-lighter);border:1px solid var(--accent-border);border-left:3px solid var(--accent);border-radius:0 7px 7px 0;padding:9px 13px;margin:12px 0}
+  .tip-box .tip-label{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:2px}
+  .tip-box p{font-size:.74rem;color:var(--accent-text);line-height:1.5}
+  .warn-box{background:#FFFBEB;border:1px solid #FDE68A;border-left:3px solid var(--yellow);border-radius:0 7px 7px 0;padding:9px 13px;margin:12px 0}
+  .warn-box .tip-label{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--yellow);margin-bottom:2px}
+  .warn-box p{font-size:.74rem;color:#78350F;line-height:1.5}
+  .expect{font-size:.72rem;color:var(--text2);margin:10px 0 0}
+  .expect b{color:var(--text);font-weight:600}
+  .asks{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .asks li{font-size:.72rem;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 10px}
+  .asks li::before{content:'“';color:var(--accent);font-weight:700}
+  .asks li::after{content:'”';color:var(--accent);font-weight:700}
+
+  .done-row{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+  .done-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--text2);font-family:'Inter',system-ui,sans-serif;transition:all .15s}
+  .done-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .done-btn.on{background:var(--green);border-color:var(--green);color:#fff}
+  .done-hint{font-size:.66rem;color:var(--text3)}
+
+  .mobile-nav{display:none;gap:6px;overflow-x:auto;padding:10px 16px;background:var(--white);border-bottom:1px solid var(--border)}
+  .mobile-nav button{white-space:nowrap;border:1px solid var(--border);background:var(--white);border-radius:20px;padding:5px 11px;font-size:.68rem;font-weight:600;color:var(--text2);font-family:'Inter',sans-serif}
+  .mobile-nav button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  @media (max-width:768px){
+    .sidebar{display:none}
+    .mobile-nav{display:flex}
+    .main{padding:0 16px 50px;max-width:100%}
+    .stepper{margin:0 -16px 16px;padding:0 12px}
+    .asks{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="mobile-nav" id="mobile-nav">
+  <button data-m="preparacao" onclick="showModule('preparacao')">Preparação</button>
+  <button data-m="noticias" class="active" onclick="showModule('noticias')">1 · Notícias</button>
+  <button data-m="email" onclick="showModule('email')">2 · E-mail</button>
+  <button data-m="calendario" onclick="showModule('calendario')">3 · Calendário</button>
+  <button data-m="todos" onclick="showModule('todos')">4 · To-dos</button>
+  <button data-m="reunioes" onclick="showModule('reunioes')">5 · Reuniões</button>
+</div>
+
+<div class="layout">
+
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>Chief of Staff no Claude</h2>
+      <p>Guia prático</p>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Antes de começar</div>
+      <a class="nav-item" data-module="preparacao" onclick="showModule('preparacao')"><span class="ni-num">0</span> Preparação <span class="ni-check">&#10003;</span></a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Blocos do seu painel</div>
+      <a class="nav-item active" data-module="noticias" onclick="showModule('noticias')"><span class="ni-num">1</span> Notícias do dia <span class="ni-check">&#10003;</span></a>
+      <a class="nav-item" data-module="email" onclick="showModule('email')"><span class="ni-num">2</span> E-mail <span class="ni-check">&#10003;</span></a>
+      <a class="nav-item" data-module="calendario" onclick="showModule('calendario')"><span class="ni-num">3</span> Calendário <span class="ni-check">&#10003;</span></a>
+      <a class="nav-item" data-module="todos" onclick="showModule('todos')"><span class="ni-num">4</span> Lista de to-dos <span class="ni-check">&#10003;</span></a>
+      <a class="nav-item" data-module="reunioes" onclick="showModule('reunioes')"><span class="ni-num">5</span> Reuniões via Granola ou Fireflies <span class="ni-check">&#10003;</span></a>
+    </div>
+
+    <div class="sidebar-progress">
+      <div class="sp-label" id="sp-label">0 de 4</div>
+      <div class="sp-bar"><div class="sp-fill" id="sp-fill"></div></div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- ================= PREPARAÇÃO ================= -->
+    <section class="section" id="mod-preparacao">
+      <div class="sec-head">
+        <h1 class="sec-title"><span class="snum">00</span> Preparação</h1>
+        <p class="sec-desc">Dois passos, uma vez só: dizer ao Claude quem você é, e criar o projeto onde o assistente vai morar. Tudo na sua conta, nada no computador.</p>
+      </div>
+      <details class="step" id="quem-step" open>
+        <summary><span class="st-num">0</span><span class="st-title">Instruções para o Claude<small>O "quem sou eu" na sua conta: todo agente fica mais específico</small></span><span class="st-done">concluído ✓</span><span class="st-time">~8 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>O Claude tem um campo que vale para todas as conversas: <strong>Instruções para o Claude</strong>, em Configurações → Conta. O que você escrever ali, ele lê antes de qualquer prompt. Dois parágrafos bastam: quem você é, e como quer ser respondida. O prompt abaixo entrevista você e escreve o texto.</p>
+          <div class="instructions">
+            <div class="inst"><span class="inst-num">1</span><span class="inst-text">Abra uma conversa nova no claude.ai, copie o prompt abaixo e cole.</span></div>
+            <div class="inst"><span class="inst-num">2</span><span class="inst-text">Responda as perguntas, <strong>uma por vez</strong>, do seu jeito. Se preferir, fale em vez de digitar.</span></div>
+            <div class="inst"><span class="inst-num">3</span><span class="inst-text">Copie o texto final. No claude.ai, abra <strong>Configurações → Conta → Instruções para o Claude</strong>, cole e salve.</span></div>
+            <div class="inst"><span class="inst-num">4</span><span class="inst-text">Teste numa conversa nova: <span class="field">o que você sabe sobre mim?</span> Ele deve responder com o seu texto, sem você colar nada.</span></div>
+          </div>
+          <details class="prompt-toggle" open><summary>Abrir o prompt · quem sou eu</summary>
+<div class="copy-block"><span class="label">Prompt · cole no claude.ai</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Quero escrever o meu "quem sou eu" para colar nas instruções do
+Claude, para que todas as conversas comecem me conhecendo. Me
+entreviste com NO MÁXIMO 4 perguntas, uma por vez:
+- quem eu sou: como quero ser chamada, o que faço, do que cuido no
+  dia a dia (família, casa, empresa, quem eu assessoro)
+- como eu gosto de receber respostas: curtas ou completas, por
+  prioridade ou por horário, texto corrido ou lista
+- o que você deve SEMPRE fazer (por exemplo: responder em português,
+  perguntar antes de assumir, dizer de onde tirou a informação)
+- o que você NUNCA deve fazer (por exemplo: inventar, decidir por
+  mim, responder e-mail no meu lugar)
+
+Depois escreva o texto final, em primeira pessoa, em dois parágrafos:
+o primeiro diz quem eu sou; o segundo diz como me responder. No
+máximo 120 palavras. Sem dado sensível: senha, conta, documento,
+patrimônio.
+
+Me mostre para eu ajustar, e me lembre onde colar:
+Configurações → Conta → Instruções para o Claude.</div>
+          </details>
+      <details class="step" id="prep-step">
+        <summary><span class="st-num">1</span><span class="st-title">Criar o projeto<small>A pasta do assistente, com a instrução do agente dentro</small></span><span class="st-done">concluído ✓</span><span class="st-time">~5 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <div class="instructions">
+            <div class="inst"><span class="inst-num">1</span><span class="inst-text">Abra <strong>claude.ai</strong> no navegador, ou o app do Claude, com a sua conta.</span></div>
+            <div class="inst"><span class="inst-num">2</span><span class="inst-text">Crie um <strong>Projeto</strong> chamado <strong>Meu Assistente pessoal</strong>. Faça todas as conversas de hoje dentro dele: o painel, os documentos e as tarefas ficam juntos.</span></div>
+            <div class="inst"><span class="inst-num">3</span><span class="inst-text">No projeto, clique em <strong>Instruções → Adicionar</strong> e cole o texto abaixo. São as regras da casa: toda conversa do projeto começa com elas.</span></div>
+            <div class="inst"><span class="inst-num">4</span><span class="inst-text">Conectores ficam para cada bloco: o bloco diz se precisa e qual. Notícias não precisa de nenhum, por isso é o primeiro.</span></div>
+          </div>
+          <details class="prompt-toggle" open><summary>Abrir o texto · instruções do projeto</summary>
+<div class="copy-block"><span class="label">Texto · cole em Instruções → Adicionar, no projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Este projeto é o meu assistente pessoal. Aqui eu monto e mantenho o
+painel "Meu dia": uma página publicada uma vez, que só desenha, e um
+documento por seção no banco do artefato (coleção "painel"), que
+tarefas agendadas atualizam.
+
+Regras que valem em toda conversa deste projeto:
+- Dados mudam gravando o documento da seção (action set, coleção
+  "painel"). Visual muda republicando a página. Nunca troque dados
+  republicando a página.
+- Cada tarefa agendada é dona de um documento só e nunca escreve em
+  outro.
+- Todo documento tem o campo "updated" em ISO, no fuso
+  America/Sao_Paulo.
+- Só leitura nos conectores: não responda e-mail, não arquive, não
+  crie nem mova compromisso, a menos que eu peça na conversa.
+- Nunca invente notícia, e-mail, compromisso, tarefa ou decisão. Sem
+  fonte, sem link ou sem certeza, pergunte ou marque "a confirmar".
+- Nada de senha, conta, documento ou valor de patrimônio nos
+  documentos nem na página.
+- Quando eu disser "concluí X", regrave o documento de to-dos sem X.
+- Quando eu disser "atualiza [seção]", releia a fonte e regrave só
+  aquele documento.
+- Antes de criar uma tarefa agendada, me mostre nome, horário e
+  prompt, e me lembre de ativar a aprovação automática.
+- Me responda curto, em português, começando pelo que muda o meu dia.</div>
+          </details>
+          <p class="expect"><b>Para conferir:</b> abra uma conversa nova no projeto e pergunte <span class="field">quais são as regras deste projeto?</span>. Ele deve repetir o essencial.</p>
+          <div class="warn-box"><div class="tip-label">O que muda em relação a abril</div><p>Em abril os dados ficavam no seu computador. Agora ficam na sua conta Claude. É o que permite o painel chegar pronto de manhã com o computador desligado.</p></div>
+          <div class="tip-box"><div class="tip-label">Como o painel funciona</div><p><b>Um painel, um link.</b> A página só desenha. Cada bloco é uma seção, e cada seção tem um documento próprio no banco do artefato e uma tarefa agendada que é a única a gravar nele. Quando o documento muda, a seção redesenha e mostra "atualizado às HH:MM". Se uma tarefa falhar, a seção avisa "desatualizado" em vez de sumir.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="prep" onclick="toggleDone('prep',0)">Concluí a preparação</button><span class="done-hint">O check fica salvo neste navegador.</span></div>
+        </div>
+      </details>
+    
+      
+          <div class="tip-box"><div class="tip-label">Exemplo do formato</div><p>"Eu sou a Ana, cuido da agenda, da casa e das viagens da família, e assessoro o Carlos nos assuntos da empresa. Moro em Belo Horizonte e leio tudo no celular, de manhã.<br><br>Quando me responder: seja curta e direta, em português, e comece pelo que vence primeiro. Pergunte antes de assumir. Nunca invente dado, nunca responda e-mail no meu lugar e me avise quando algo depender do Carlos."</p></div>
+          <div class="warn-box"><div class="tip-label">O que não vai aí</div><p>Senha, número de conta, documento, valor de patrimônio. O texto vale para todas as conversas da conta, então ele deve ser útil e inofensivo ao mesmo tempo.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="quem" onclick="toggleDone('quem',0)">Colei nas instruções</button><span class="done-hint">O teste "o que você sabe sobre mim?" passou.</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 1 · NOTÍCIAS ================= -->
+    <section class="section active" id="mod-noticias">
+      <div class="sec-head">
+        <h1 class="sec-title"><span class="snum">01</span> Notícias do dia</h1>
+        <p class="sec-desc">O bloco mais simples, e o primeiro. Não precisa de conector: o Claude pesquisa na web e monta o artefato para você.</p>
+      </div>
+      <div class="stepper">
+        <div class="stepper-node active" data-mod="not" data-step="0" onclick="goStep('not',0)"><span class="sn-check">&#10003;</span><span class="sn-label">Conectar</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="not" data-step="1" onclick="goStep('not',1)"><span class="sn-check">&#10003;</span><span class="sn-label">Prompt</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="not" data-step="2" onclick="goStep('not',2)"><span class="sn-check">&#10003;</span><span class="sn-label">Feedback</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="not" data-step="3" onclick="goStep('not',3)"><span class="sn-check">&#10003;</span><span class="sn-label">Deixar rodando</span></div>
+      </div>
+
+      <details class="step" id="not-step-0" open>
+        <summary><span class="st-num">0</span><span class="st-title">Conectar<small>Nada a conectar aqui</small></span><span class="st-done">concluído ✓</span><span class="st-time">~1 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Notícia vem da busca na web, que o Claude já tem. Só confira que você está dentro do projeto <strong>Meu Assistente pessoal</strong> e abra uma conversa nova. Este bloco cria o painel; os outros acrescentam seções a ele.</p>
+          <div class="done-row"><button class="done-btn" data-done="not-0" onclick="toggleDone('not',0)">Pronto</button><span class="done-hint">Conversa nova aberta dentro do projeto.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="not-step-1">
+        <summary><span class="st-num">1</span><span class="st-title">O prompt<small>Ele pergunta o que você quer ver, busca e monta o artefato</small></span><span class="st-done">concluído ✓</span><span class="st-time">~12 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Um prompt só. Ele faz até três perguntas sobre como você vai usar, pesquisa os seus assuntos e cria um artefato: um painel de notícias que abre ali mesmo, no computador ou no celular.</p>
+          <details class="prompt-toggle" open><summary>Abrir o prompt · minhas notícias</summary>
+<div class="copy-block"><span class="label">Prompt · cole no claude.ai</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Quero um painel pessoal chamado "Meu dia", que tarefas agendadas
+vão atualizar, cada uma por conta própria. Hoje montamos a primeira
+seção: notícias.
+
+Antes de montar, me faça NO MÁXIMO 3 perguntas para entender como eu
+vou usar:
+- quais assuntos me interessam (3 a 5), e o que NÃO me interessa
+  dentro de cada um
+- quando eu leio: de manhã ou à noite, no celular ou no computador
+- quanto eu quero por dia: só manchetes, ou manchete + uma frase +
+  por que importa para mim
+
+ARQUITETURA, siga exatamente:
+- um único ARTEFATO em HTML, publicado uma vez, com a capacidade "db"
+  (banco do artefato). Regra de acesso: leitura e escrita só para quem
+  pode editar. Só eu vejo os dados.
+- a página NÃO contém dados. Ao abrir, ela usa claude.use("db") e
+  assina (onSnapshot) um documento por seção, na coleção "painel".
+  Quando o documento muda, a seção redesenha. Sem dados, mostra
+  "sem dados ainda".
+- toda seção mostra "atualizado às HH:MM" (campo "updated" do
+  documento) e marca "desatualizado" depois de 8 horas.
+- nenhuma conversa ou tarefa republica a página para trocar dados:
+  dados mudam gravando o documento; visual muda republicando a página.
+- documento desta seção: painel/noticias, no formato
+  {updated, itens:[{assunto, manchete, veiculo, data, resumo,
+  por_que, url}]}
+
+Regras de conteúdo: só notícia das últimas 48 horas, com link real;
+busque na web agora; nunca invente notícia nem resumo.
+
+PASSOS:
+1. busque as notícias reais agora, uma vez
+2. crie e publique a página: um cartão por notícia, filtro por
+   assunto, desenho limpo, uma cor só, fácil de ler no celular, tema
+   claro e escuro, sem biblioteca externa
+3. grave o documento painel/noticias no banco (action set) e leia de
+   volta para conferir
+4. me dê o link do artefato e me pergunte três coisas: o que sobrou,
+   o que faltou, e o que eu mudaria no visual. Ajuste com as minhas
+   respostas: conteúdo, regravando o documento; visual, republicando
+   a página.</div>
+          </details>
+          <p class="expect"><b>O que esperar:</b> até três perguntas, uns segundos de busca, e um painel com as suas notícias abrindo ao lado da conversa. Responda curto: "futebol, mas não fofoca" já é uma resposta.</p>
+          <div class="done-row"><button class="done-btn" data-done="not-1" onclick="toggleDone('not',1)">Artefato criado</button><span class="done-hint">O painel abriu com notícias reais e links.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="not-step-2">
+        <summary><span class="st-num">2</span><span class="st-title">Feedback<small>Duas rodadas de ajuste, na conversa</small></span><span class="st-done">concluído ✓</span><span class="st-time">~8 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>O artefato é o primeiro rascunho. O que faz ele virar seu é a conversa depois. Peça pelo menos duas mudanças. Exemplos que funcionam:</p>
+          <ul class="asks">
+            <li>Essa notícia não é do meu assunto. Tira e me diz por que entrou.</li>
+            <li>Coloca o que importa para mim em cima, e o resto embaixo.</li>
+            <li>Quero ler no celular: letra maior, um cartão por linha.</li>
+            <li>Troca a cor por uma mais discreta.</li>
+            <li>Acrescenta o assunto "obras na cidade".</li>
+            <li>Me mostra só o que saiu hoje.</li>
+          </ul>
+          <div class="tip-box"><div class="tip-label">A regra que vale para todos os blocos</div><p>Conteúdo errado, você corrige dizendo o que quer e o que não quer: o Claude regrava o documento. Visual errado, você descreve como gostaria: ele republica a página. Nunca aceite um item sem link ou sem fonte. E guarde o link do artefato: os próximos blocos pedem ele.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="not-2" onclick="toggleDone('not',2)">Ajustado</button><span class="done-hint">Duas mudanças pedidas e feitas.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="not-step-3">
+        <summary><span class="st-num">3</span><span class="st-title">Deixar rodando<small>Receber o painel pronto todo dia, com o computador desligado</small></span><span class="st-done">concluído ✓</span><span class="st-time">~5 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>No projeto, clique em <strong>Programado → Adicionar</strong> e cole o prompt abaixo, com o link do seu artefato. A tarefa roda na nuvem, no horário que você escolher, e grava só o documento desta seção. A página não muda: ela redesenha sozinha quando o documento muda.</p>
+          <details class="prompt-toggle"><summary>Abrir o prompt · tarefa diária</summary>
+<div class="copy-block"><span class="label">Prompt · cole em Programado → Adicionar, no projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Crie uma tarefa agendada chamada "Meu dia · notícias", que rode às
+[hora, por exemplo 06:00], [todos os dias ou só dias úteis]. Ela é a
+única dona do documento painel/noticias do artefato:
+[cole aqui o link do artefato "Meu dia"]
+
+A sessão agendada não lembra de nada, então o prompt da tarefa
+precisa ser completo. Escreva nele:
+- os meus assuntos e o que ignorar: [copie da nossa conversa]
+- buscar na web as notícias das últimas 24 horas, com link real, no
+  máximo [3] por assunto
+- montar o JSON no formato {updated, itens:[{assunto, manchete,
+  veiculo, data, resumo, por_que, url}]}, com updated em ISO no fuso
+  America/Sao_Paulo
+- gravar com a ferramenta de banco do artefato: action set,
+  collection "painel", doc_id "noticias"
+- não republicar a página nem escrever em outro documento
+- se a busca falhar, não gravar nada
+- no fim, ler o documento de volta e conferir
+
+Me mostre o nome, o horário e o prompt da tarefa antes de criar.
+Depois, me diga como ativar a aprovação automática nela e como rodar
+uma vez manualmente para testar.</div>
+          </details>
+          <div class="warn-box"><div class="tip-label">Um limite honesto</div><p>O painel tem um link só, e é ele que você abre todo dia. A tarefa só grava o documento de notícias; se ela falhar, a seção mostra a última versão boa com o horário dela e o aviso de "desatualizado" depois de 8 horas. Ative a aprovação automática na tarefa: sem ela, a tarefa para na primeira confirmação e não grava nada.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="not-3" onclick="toggleDone('not',3)">Tarefa criada</button><span class="done-hint">Bloco 1 fechado.</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 2 · E-MAIL ================= -->
+    <section class="section" id="mod-email">
+      <div class="sec-head">
+        <h1 class="sec-title"><span class="snum">02</span> E-mail</h1>
+        <p class="sec-desc">Um painel só com os e-mails que pedem alguma coisa de você, e um lembrete do que você mandou e ninguém respondeu.</p>
+      </div>
+      <div class="stepper">
+        <div class="stepper-node active" data-mod="em" data-step="0" onclick="goStep('em',0)"><span class="sn-check">&#10003;</span><span class="sn-label">Conectar</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="em" data-step="1" onclick="goStep('em',1)"><span class="sn-check">&#10003;</span><span class="sn-label">Prompt</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="em" data-step="2" onclick="goStep('em',2)"><span class="sn-check">&#10003;</span><span class="sn-label">Feedback</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="em" data-step="3" onclick="goStep('em',3)"><span class="sn-check">&#10003;</span><span class="sn-label">Deixar rodando</span></div>
+      </div>
+
+      <details class="step" id="em-step-0" open>
+        <summary><span class="st-num">0</span><span class="st-title">Conectar o e-mail<small>Gmail ou Outlook</small></span><span class="st-done">concluído ✓</span><span class="st-time">~3 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <div class="instructions">
+            <div class="inst"><span class="inst-num">1</span><span class="inst-text">No claude.ai, abra <strong>Configurações → Conectores</strong>.</span></div>
+            <div class="inst"><span class="inst-num">2</span><span class="inst-text">Conecte o <strong>Gmail</strong>. Quem usa Microsoft conecta o <strong>Outlook</strong>. Autorize com a conta que recebe os e-mails que importam.</span></div>
+            <div class="inst"><span class="inst-num">3</span><span class="inst-text">Teste numa conversa nova, dentro do projeto: <span class="field">quais foram os últimos 3 e-mails que eu recebi?</span></span></div>
+          </div>
+          <div class="warn-box"><div class="tip-label">Se a conta for da empresa</div><p>O Outlook corporativo pode pedir aprovação do administrador. Se isso acontecer, faça este bloco com a conta pessoal e deixe a corporativa para depois.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="em-0" onclick="toggleDone('em',0)">Conectado</button><span class="done-hint">Ele respondeu com os seus e-mails.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="em-step-1">
+        <summary><span class="st-num">1</span><span class="st-title">O prompt<small>Ele pergunta como você quer ver, lê a caixa e monta o artefato</small></span><span class="st-done">concluído ✓</span><span class="st-time">~12 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Um prompt só. Ele pergunta quais categorias você quer ver e a partir de quantos dias quer ser lembrada, lê os últimos dias da caixa e cria o painel.</p>
+          <details class="prompt-toggle" open><summary>Abrir o prompt · meus e-mails</summary>
+<div class="copy-block"><span class="label">Prompt · cole no claude.ai</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Quero acrescentar a seção "e-mails" ao meu painel "Meu dia", que já
+está publicado aqui: [cole o link do artefato]. Não mexa nas outras
+seções.
+
+Antes de montar, me faça NO MÁXIMO 3 perguntas para entender como eu
+vou usar:
+- quais categorias eu quero ver (por exemplo: família, escola, casa,
+  banco, viagens, trabalho) e o que pode ficar de fora (newsletter,
+  promoção, aviso automático)
+- a partir de quantos dias sem resposta eu quero ser lembrada
+- quem são as pessoas cujo e-mail eu nunca quero perder
+
+ARQUITETURA, siga exatamente:
+- um único ARTEFATO em HTML, publicado uma vez, com a capacidade "db"
+  (banco do artefato). Regra de acesso: leitura e escrita só para quem
+  pode editar. Só eu vejo os dados.
+- a página NÃO contém dados. Ao abrir, ela usa claude.use("db") e
+  assina (onSnapshot) um documento por seção, na coleção "painel".
+  Quando o documento muda, a seção redesenha. Sem dados, mostra
+  "sem dados ainda".
+- toda seção mostra "atualizado às HH:MM" (campo "updated" do
+  documento) e marca "desatualizado" depois de 8 horas.
+- nenhuma conversa ou tarefa republica a página para trocar dados:
+  dados mudam gravando o documento; visual muda republicando a página.
+- documento desta seção: painel/email, no formato
+  {updated, itens:[{categoria, de, assunto, pede, dias, prazo, url}],
+  esperando:[{para, assunto, dias}]}
+
+Regras de conteúdo: leia a minha caixa pelo conector de e-mail, os
+últimos 7 dias; só entra e-mail que pede algo de mim (resposta,
+decisão, pagamento, documento, confirmação), com o que pede em uma
+frase; e-mail que EU mandei e ninguém respondeu vai em "esperando";
+só leitura: não responda, não arquive, não marque nada; nunca
+invente conteúdo.
+
+PASSOS:
+1. leia a caixa agora, uma vez
+2. republique a página com a seção nova: um bloco por categoria, o
+   bloco "esperando resposta", destaque para o que passou do limite
+   de dias que eu escolhi
+3. grave o documento painel/email (action set) e leia de volta
+4. me pergunte três coisas: o que sobrou, o que faltou, e o que eu
+   mudaria no visual. Ajuste com as minhas respostas.</div>
+          </details>
+          <p class="expect"><b>O que esperar:</b> até três perguntas, a leitura da caixa, e um painel com poucos e-mails, só os que pedem algo. Se vier newsletter ou aviso automático, é feedback.</p>
+          <div class="done-row"><button class="done-btn" data-done="em-1" onclick="toggleDone('em',1)">Artefato criado</button><span class="done-hint">O painel abriu só com e-mails que pedem ação.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="em-step-2">
+        <summary><span class="st-num">2</span><span class="st-title">Feedback<small>Duas rodadas de ajuste, na conversa</small></span><span class="st-done">concluído ✓</span><span class="st-time">~8 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Peça pelo menos duas mudanças. Exemplos que funcionam:</p>
+          <ul class="asks">
+            <li>Esse aqui é propaganda, não pede nada. Tira e ajusta o filtro.</li>
+            <li>E-mail da escola vai sempre em cima, com destaque.</li>
+            <li>Me lembra do que passou de 3 dias sem resposta, em vermelho.</li>
+            <li>Quero ver quem está esperando resposta minha antes de tudo.</li>
+            <li>Junta "casa" e "condomínio" numa categoria só.</li>
+            <li>Letra maior, um e-mail por linha, para ler no celular.</li>
+          </ul>
+          <div class="tip-box"><div class="tip-label">O painel não responde e-mail</div><p>Ele mostra o que pede ação e há quanto tempo. Responder continua sendo seu. Se quiser, peça um rascunho na conversa: "escreve uma resposta curta para o e-mail da escola".</p></div>
+          <div class="done-row"><button class="done-btn" data-done="em-2" onclick="toggleDone('em',2)">Ajustado</button><span class="done-hint">Duas mudanças pedidas e feitas.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="em-step-3">
+        <summary><span class="st-num">3</span><span class="st-title">Deixar rodando<small>Receber o painel pronto todo dia, com o computador desligado</small></span><span class="st-done">concluído ✓</span><span class="st-time">~5 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>No projeto, clique em <strong>Programado → Adicionar</strong> e cole o prompt abaixo, com o link do seu artefato. A tarefa lê o e-mail pelo conector, na nuvem, e grava só o documento desta seção.</p>
+          <details class="prompt-toggle"><summary>Abrir o prompt · tarefa diária</summary>
+<div class="copy-block"><span class="label">Prompt · cole em Programado → Adicionar, no projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Crie uma tarefa agendada chamada "Meu dia · e-mails", que rode às
+[hora, por exemplo 06:00], [todos os dias ou só dias úteis]. Ela é a
+única dona do documento painel/email do artefato:
+[cole aqui o link do artefato "Meu dia"]
+
+A sessão agendada não lembra de nada, então o prompt da tarefa
+precisa ser completo. Escreva nele:
+- as minhas categorias, o que fica de fora, o limite de dias e as
+  pessoas que eu nunca quero perder: [copie da nossa conversa]
+- ler a caixa pelo conector de e-mail, últimos 7 dias, só leitura
+- só e-mail que pede ação minha, com o que pede em uma frase; o que
+  eu mandei sem resposta vai em "esperando"
+- montar o JSON no formato {updated, itens:[{categoria, de, assunto,
+  pede, dias, prazo, url}], esperando:[{para, assunto, dias}]}, com
+  updated em ISO no fuso America/Sao_Paulo
+- gravar com a ferramenta de banco do artefato: action set,
+  collection "painel", doc_id "email"
+- não republicar a página nem escrever em outro documento
+- se o conector falhar, não gravar nada
+- no fim, ler o documento de volta e conferir
+
+Me mostre o nome, o horário e o prompt da tarefa antes de criar.
+Depois, me diga como ativar a aprovação automática nela e como rodar
+uma vez manualmente para testar.</div>
+          </details>
+          <div class="warn-box"><div class="tip-label">Um limite honesto</div><p>Cada tarefa é dona de um documento só. A de e-mails nunca escreve em notícias ou agenda, e vice-versa. Se duas gravassem no mesmo lugar, valeria a última, e a outra sumiria. Ative a aprovação automática na tarefa.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="em-3" onclick="toggleDone('em',3)">Tarefa criada</button><span class="done-hint">Bloco 2 fechado.</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 3 · CALENDÁRIO ================= -->
+    <section class="section" id="mod-calendario">
+      <div class="sec-head">
+        <h1 class="sec-title"><span class="snum">03</span> Calendário</h1>
+        <p class="sec-desc">Seu dia em linha do tempo, com o que preparar para cada compromisso, e os próximos dias em blocos.</p>
+      </div>
+      <div class="stepper">
+        <div class="stepper-node active" data-mod="cal" data-step="0" onclick="goStep('cal',0)"><span class="sn-check">&#10003;</span><span class="sn-label">Conectar</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="cal" data-step="1" onclick="goStep('cal',1)"><span class="sn-check">&#10003;</span><span class="sn-label">Prompt</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="cal" data-step="2" onclick="goStep('cal',2)"><span class="sn-check">&#10003;</span><span class="sn-label">Feedback</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="cal" data-step="3" onclick="goStep('cal',3)"><span class="sn-check">&#10003;</span><span class="sn-label">Deixar rodando</span></div>
+      </div>
+
+      <details class="step" id="cal-step-0" open>
+        <summary><span class="st-num">0</span><span class="st-title">Conectar o calendário<small>Google Calendar ou Outlook</small></span><span class="st-done">concluído ✓</span><span class="st-time">~3 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <div class="instructions">
+            <div class="inst"><span class="inst-num">1</span><span class="inst-text">No claude.ai, abra <strong>Configurações → Conectores</strong>.</span></div>
+            <div class="inst"><span class="inst-num">2</span><span class="inst-text">Conecte o <strong>Google Calendar</strong>. Quem usa Microsoft conecta o <strong>Outlook</strong>. Se você cuida da agenda de outra pessoa, conecte a conta que enxerga a agenda dela.</span></div>
+            <div class="inst"><span class="inst-num">3</span><span class="inst-text">Teste numa conversa nova, dentro do projeto: <span class="field">o que eu tenho amanhã?</span></span></div>
+          </div>
+          <div class="warn-box"><div class="tip-label">Agenda compartilhada só como "ocupado"</div><p>Se uma agenda for compartilhada só com horários livres e ocupados, o Claude vê o bloco mas não o título. Ele vai dizer "compromisso privado". Para ver o nome, a pessoa dona da agenda precisa compartilhar os detalhes.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="cal-0" onclick="toggleDone('cal',0)">Conectado</button><span class="done-hint">Ele respondeu com a sua agenda.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="cal-step-1">
+        <summary><span class="st-num">1</span><span class="st-title">O prompt<small>Ele pergunta como você quer ver o dia, lê a agenda e monta o artefato</small></span><span class="st-done">concluído ✓</span><span class="st-time">~12 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Um prompt só. Ele pergunta o que você quer ver de cada compromisso e até onde quer enxergar, lê a agenda e cria o painel do dia.</p>
+          <details class="prompt-toggle" open><summary>Abrir o prompt · meu dia</summary>
+<div class="copy-block"><span class="label">Prompt · cole no claude.ai</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Quero acrescentar a seção "agenda" ao meu painel "Meu dia", que já
+está publicado aqui: [cole o link do artefato]. Não mexa nas outras
+seções.
+
+Antes de montar, me faça NO MÁXIMO 3 perguntas para entender como eu
+vou usar:
+- o que eu quero ver de cada compromisso: com quem, onde, link da
+  chamada, o que preparar antes
+- até onde eu quero enxergar: só hoje, hoje e amanhã, ou a semana
+- o que é fixo na minha semana (aula, treino, terapia) e pode
+  aparecer mais discreto
+
+ARQUITETURA, siga exatamente:
+- um único ARTEFATO em HTML, publicado uma vez, com a capacidade "db"
+  (banco do artefato). Regra de acesso: leitura e escrita só para quem
+  pode editar. Só eu vejo os dados.
+- a página NÃO contém dados. Ao abrir, ela usa claude.use("db") e
+  assina (onSnapshot) um documento por seção, na coleção "painel".
+  Quando o documento muda, a seção redesenha. Sem dados, mostra
+  "sem dados ainda".
+- toda seção mostra "atualizado às HH:MM" (campo "updated" do
+  documento) e marca "desatualizado" depois de 8 horas.
+- nenhuma conversa ou tarefa republica a página para trocar dados:
+  dados mudam gravando o documento; visual muda republicando a página.
+- documento desta seção: painel/agenda, no formato
+  {updated, de, ate, eventos:[{data, inicio, fim, titulo, com_quem,
+  local, link, preparar, fixo}], alertas:[texto]}
+
+Regras de conteúdo: leia a minha agenda pelo conector de calendário,
+de hoje até o horizonte que eu escolher; se o convite tiver detalhes,
+diga em uma frase o que preparar; marque em "alertas" conflito de
+horário e intervalo apertado entre lugares diferentes; compromisso
+privado aparece como "privado", sem chute; nunca invente.
+
+PASSOS:
+1. leia a agenda agora, uma vez
+2. republique a página com a seção nova: hoje em linha do tempo, os
+   próximos dias em blocos, os alertas no alto da seção
+3. grave o documento painel/agenda (action set) e leia de volta
+4. me pergunte três coisas: o que sobrou, o que faltou, e o que eu
+   mudaria no visual. Ajuste com as minhas respostas.</div>
+          </details>
+          <p class="expect"><b>O que esperar:</b> até três perguntas, a leitura da agenda, e uma linha do tempo do dia com os próximos dias embaixo. Se ele chutar um detalhe que não está no convite, é feedback.</p>
+          <div class="done-row"><button class="done-btn" data-done="cal-1" onclick="toggleDone('cal',1)">Artefato criado</button><span class="done-hint">O painel abriu com a sua agenda de verdade.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="cal-step-2">
+        <summary><span class="st-num">2</span><span class="st-title">Feedback<small>Duas rodadas de ajuste, na conversa</small></span><span class="st-done">concluído ✓</span><span class="st-time">~8 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Peça pelo menos duas mudanças. Exemplos que funcionam:</p>
+          <ul class="asks">
+            <li>Treino e terapia em cinza, bem discretos.</li>
+            <li>Coloca o link da videochamada em cada compromisso.</li>
+            <li>Me avisa quando dois compromissos fora de casa tiverem menos de 30 minutos entre eles.</li>
+            <li>Mostra só hoje e amanhã, o resto esconde.</li>
+            <li>O que preparar tem que aparecer antes do horário, em destaque.</li>
+            <li>Letra maior, para ler no celular no carro.</li>
+          </ul>
+          <div class="tip-box"><div class="tip-label">Para quem cuida da agenda de outra pessoa</div><p>Peça duas colunas: "o que ele(a) precisa saber" e "o que eu resolvo sozinha". O painel vira o briefing que você leva de manhã.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="cal-2" onclick="toggleDone('cal',2)">Ajustado</button><span class="done-hint">Duas mudanças pedidas e feitas.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="cal-step-3">
+        <summary><span class="st-num">3</span><span class="st-title">Deixar rodando<small>Receber o painel pronto todo dia, com o computador desligado</small></span><span class="st-done">concluído ✓</span><span class="st-time">~5 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>No projeto, clique em <strong>Programado → Adicionar</strong> e cole o prompt abaixo, com o link do seu artefato. A tarefa lê a agenda pelo conector, na nuvem, e grava só o documento desta seção.</p>
+          <details class="prompt-toggle"><summary>Abrir o prompt · tarefa diária</summary>
+<div class="copy-block"><span class="label">Prompt · cole em Programado → Adicionar, no projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Crie uma tarefa agendada chamada "Meu dia · agenda", que rode às
+[hora, por exemplo 06:00], [todos os dias ou só dias úteis]. Ela é a
+única dona do documento painel/agenda do artefato:
+[cole aqui o link do artefato "Meu dia"]
+
+A sessão agendada não lembra de nada, então o prompt da tarefa
+precisa ser completo. Escreva nele:
+- o horizonte, o que ver de cada compromisso e o que é fixo: [copie
+  da nossa conversa]
+- ler a agenda pelo conector de calendário, de hoje até o horizonte
+- montar o JSON no formato {updated, de, ate, eventos:[{data, inicio,
+  fim, titulo, com_quem, local, link, preparar, fixo}], alertas:
+  [texto]}, com updated em ISO no fuso America/Sao_Paulo
+- gravar com a ferramenta de banco do artefato: action set,
+  collection "painel", doc_id "agenda"
+- não republicar a página nem escrever em outro documento
+- se o conector falhar, não gravar nada
+- no fim, ler o documento de volta e conferir
+
+Me mostre o nome, o horário e o prompt da tarefa antes de criar.
+Depois, me diga como ativar a aprovação automática nela e como rodar
+uma vez manualmente para testar.</div>
+          </details>
+          <div class="warn-box"><div class="tip-label">Um limite honesto</div><p>Compromisso marcado depois do horário da tarefa só aparece na próxima execução, ou quando você pedir "atualiza minha agenda" na conversa (o Claude regrava o documento). Ative a aprovação automática na tarefa.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="cal-3" onclick="toggleDone('cal',3)">Tarefa criada</button><span class="done-hint">Bloco 3 fechado.</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 4 · TO-DOS ================= -->
+    <section class="section" id="mod-todos">
+      <div class="sec-head">
+        <h1 class="sec-title"><span class="snum">04</span> Lista de to-dos</h1>
+        <p class="sec-desc">O que você deve fazer e o que está esperando de alguém, num lugar só. Começa com o que você ditar; se o e-mail estiver conectado, ele complementa.</p>
+      </div>
+      <div class="stepper">
+        <div class="stepper-node active" data-mod="td" data-step="0" onclick="goStep('td',0)"><span class="sn-check">&#10003;</span><span class="sn-label">Conectar</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="td" data-step="1" onclick="goStep('td',1)"><span class="sn-check">&#10003;</span><span class="sn-label">Prompt</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="td" data-step="2" onclick="goStep('td',2)"><span class="sn-check">&#10003;</span><span class="sn-label">Feedback</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="td" data-step="3" onclick="goStep('td',3)"><span class="sn-check">&#10003;</span><span class="sn-label">Deixar rodando</span></div>
+      </div>
+
+      <details class="step" id="td-step-0" open>
+        <summary><span class="st-num">0</span><span class="st-title">Conectar<small>Opcional: o e-mail já conectado ajuda</small></span><span class="st-done">concluído ✓</span><span class="st-time">~2 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Este bloco funciona sem conector: você conta as suas tarefas e ele organiza. Se o e-mail já estiver conectado (bloco 2), ele acrescenta o que pede ação e o que você mandou e ninguém respondeu.</p>
+          <div class="instructions">
+            <div class="inst"><span class="inst-num">1</span><span class="inst-text">Antes de colar o prompt, anote de cabeça 5 a 10 coisas que você deve fazer esta semana. Pode falar em vez de digitar, com o <strong>Handy</strong> ou o microfone do celular.</span></div>
+            <div class="inst"><span class="inst-num">2</span><span class="inst-text">Abra uma conversa nova dentro do projeto <strong>Meu Assistente pessoal</strong>.</span></div>
+          </div>
+          <div class="done-row"><button class="done-btn" data-done="td-0" onclick="toggleDone('td',0)">Pronto</button><span class="done-hint">Lista na cabeça, conversa aberta.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="td-step-1">
+        <summary><span class="st-num">1</span><span class="st-title">O prompt<small>Ele pergunta como você organiza o que deve, e monta o artefato</small></span><span class="st-done">concluído ✓</span><span class="st-time">~12 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Um prompt só. Ele pergunta de onde vêm as suas tarefas e como você gosta de ver, pede a sua lista, complementa com o e-mail se houver, e cria o painel.</p>
+          <details class="prompt-toggle" open><summary>Abrir o prompt · meus to-dos</summary>
+<div class="copy-block"><span class="label">Prompt · cole no claude.ai</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Quero acrescentar a seção "to-dos" ao meu painel "Meu dia", que já
+está publicado aqui: [cole o link do artefato]. Não mexa nas outras
+seções.
+
+Antes de montar, me faça NO MÁXIMO 3 perguntas para entender como eu
+vou usar:
+- de onde vêm as minhas tarefas: coisas que eu anoto, pedidos da
+  família ou do trabalho, e-mails, reuniões
+- como eu gosto de ver: por prazo, por assunto, ou por pessoa
+- o que conta como urgente para mim
+
+Depois das perguntas, me peça a minha lista: vou ditar as tarefas
+abertas, uma por linha, em texto ou áudio. Para cada uma, se faltar,
+pergunte para quem é e se tem prazo.
+
+ARQUITETURA, siga exatamente:
+- um único ARTEFATO em HTML, publicado uma vez, com a capacidade "db"
+  (banco do artefato). Regra de acesso: leitura e escrita só para quem
+  pode editar. Só eu vejo os dados.
+- a página NÃO contém dados. Ao abrir, ela usa claude.use("db") e
+  assina (onSnapshot) um documento por seção, na coleção "painel".
+  Quando o documento muda, a seção redesenha. Sem dados, mostra
+  "sem dados ainda".
+- toda seção mostra "atualizado às HH:MM" (campo "updated" do
+  documento) e marca "desatualizado" depois de 8 horas.
+- nenhuma conversa ou tarefa republica a página para trocar dados:
+  dados mudam gravando o documento; visual muda republicando a página.
+- documento desta seção: painel/todos, no formato
+  {updated, minhas:[{o_que, para_quem, origem, prazo, dias}],
+  esperando:[{quem, o_que, dias}]}
+
+Regras de conteúdo: se o meu e-mail estiver conectado, acrescente o
+que pede ação nos últimos 7 dias, e o que EU mandei sem resposta vai
+em "esperando"; nunca invente tarefa; para concluir uma tarefa, eu
+digo "concluí X" nesta conversa e você regrava o documento sem ela.
+
+PASSOS:
+1. monte a lista com o que eu ditar, mais o e-mail se houver
+2. republique a página com a seção nova: lista "eu resolvo" na ordem
+   que eu escolhi, lista "esperando de alguém" com o nome e há
+   quantos dias, destaque em vermelho para o que venceu, e a frase
+   "para concluir, diga na conversa: concluí [a tarefa]"
+3. grave o documento painel/todos (action set) e leia de volta
+4. me pergunte três coisas: o que sobrou, o que faltou, e o que eu
+   mudaria no visual. Ajuste com as minhas respostas.</div>
+          </details>
+          <p class="expect"><b>O que esperar:</b> até três perguntas, um pedido para você ditar a lista, e um painel com duas listas: o que é seu e o que está com o outro.</p>
+          <div class="done-row"><button class="done-btn" data-done="td-1" onclick="toggleDone('td',1)">Artefato criado</button><span class="done-hint">O painel abriu com a sua lista organizada.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="td-step-2">
+        <summary><span class="st-num">2</span><span class="st-title">Feedback<small>Duas rodadas de ajuste, na conversa</small></span><span class="st-done">concluído ✓</span><span class="st-time">~8 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Peça pelo menos duas mudanças. Exemplos que funcionam:</p>
+          <ul class="asks">
+            <li>Concluí "ligar para o arquiteto". Tira da lista e me mostra o que ficou.</li>
+            <li>Agrupa por pessoa: tudo que depende da Fernanda junto.</li>
+            <li>O que vence esta semana vai em cima, com o dia.</li>
+            <li>Acrescenta: "pagar o seguro até dia 30".</li>
+            <li>Quem está me devendo resposta há mais de uma semana, marca como "cobrar".</li>
+            <li>Letra maior, uma tarefa por linha.</li>
+          </ul>
+          <div class="tip-box"><div class="tip-label">A caixinha é só visual</div><p>Marcar no painel não avisa o assistente. Para concluir de verdade, diga na conversa "concluí X". Na próxima versão do painel, a tarefa some.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="td-2" onclick="toggleDone('td',2)">Ajustado</button><span class="done-hint">Duas mudanças pedidas e feitas.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="td-step-3">
+        <summary><span class="st-num">3</span><span class="st-title">Deixar rodando<small>Receber a lista atualizada todo dia</small></span><span class="st-done">concluído ✓</span><span class="st-time">~5 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>No projeto, clique em <strong>Programado → Adicionar</strong> e cole o prompt abaixo, com o link do seu artefato. A tarefa lê a lista atual, acrescenta o que vem do e-mail e grava de volta. O que você concluir, diga na conversa.</p>
+          <details class="prompt-toggle"><summary>Abrir o prompt · tarefa diária</summary>
+<div class="copy-block"><span class="label">Prompt · cole em Programado → Adicionar, no projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Crie uma tarefa agendada chamada "Meu dia · to-dos", que rode às
+[hora, por exemplo 06:00], [todos os dias ou só dias úteis]. Ela é a
+única tarefa que grava o documento painel/todos do artefato:
+[cole aqui o link do artefato "Meu dia"]
+
+A sessão agendada não lembra de nada, então o prompt da tarefa
+precisa ser completo. Escreva nele:
+- ler primeiro o documento painel/todos atual (action get) e manter
+  tudo o que está nele: a lista é minha, a tarefa não apaga nada
+- ler o e-mail pelo conector, últimos 7 dias, e acrescentar o que
+  pede ação minha que ainda não esteja na lista; o que eu mandei sem
+  resposta vai em "esperando"
+- recalcular "dias" e marcar o que venceu
+- montar o JSON no formato {updated, minhas:[{o_que, para_quem,
+  origem, prazo, dias}], esperando:[{quem, o_que, dias}]}, com updated
+  em ISO no fuso America/Sao_Paulo
+- gravar com a ferramenta de banco do artefato: action set,
+  collection "painel", doc_id "todos"
+- não republicar a página nem escrever em outro documento
+- se o conector falhar, gravar só a lista atual com "dias" recalculado
+- no fim, ler o documento de volta e conferir
+
+Me mostre o nome, o horário e o prompt da tarefa antes de criar.
+Depois, me diga como ativar a aprovação automática nela e como rodar
+uma vez manualmente para testar.</div>
+          </details>
+          <div class="warn-box"><div class="tip-label">Um limite honesto</div><p>Aqui há dois escritores no mesmo documento: a tarefa diária e você, quando diz "concluí X" na conversa. Vale a última gravação. Por isso a tarefa lê o documento antes de gravar e nunca apaga o que está nele. Ative a aprovação automática na tarefa.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="td-3" onclick="toggleDone('td',3)">Tarefa criada</button><span class="done-hint">Bloco 4 fechado.</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 5 · REUNIÕES ================= -->
+    <section class="section" id="mod-reunioes">
+      <div class="sec-head">
+        <h1 class="sec-title"><span class="snum">05</span> Reuniões via Granola ou Fireflies</h1>
+        <p class="sec-desc">A memória do sistema: o que foi decidido e o que ficou pendente em cada reunião, sem você anotar.</p>
+      </div>
+      <div class="stepper">
+        <div class="stepper-node active" data-mod="re" data-step="0" onclick="goStep('re',0)"><span class="sn-check">&#10003;</span><span class="sn-label">Conectar</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="re" data-step="1" onclick="goStep('re',1)"><span class="sn-check">&#10003;</span><span class="sn-label">Prompt</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="re" data-step="2" onclick="goStep('re',2)"><span class="sn-check">&#10003;</span><span class="sn-label">Feedback</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="re" data-step="3" onclick="goStep('re',3)"><span class="sn-check">&#10003;</span><span class="sn-label">Deixar rodando</span></div>
+      </div>
+
+      <details class="step" id="re-step-0" open>
+        <summary><span class="st-num">0</span><span class="st-title">Conectar o gravador<small>Granola ou Fireflies</small></span><span class="st-done">concluído ✓</span><span class="st-time">~5 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <div class="instructions">
+            <div class="inst"><span class="inst-num">1</span><span class="inst-text">Instale o <strong>Granola</strong> no celular e no computador. Ele grava reunião presencial e videochamada e faz as notas. O plano grátis guarda 30 dias, por isso o painel importa.</span></div>
+            <div class="inst"><span class="inst-num">2</span><span class="inst-text">No claude.ai, em <strong>Configurações → Conectores</strong>, conecte o <strong>Granola</strong> (ou o <strong>Fireflies</strong>, se já usa).</span></div>
+            <div class="inst"><span class="inst-num">3</span><span class="inst-text">Grave uma reunião de teste de dois minutos, hoje. Depois teste numa conversa nova: <span class="field">resume a minha última reunião</span>.</span></div>
+          </div>
+          <div class="warn-box"><div class="tip-label">Avise quem está na sala</div><p>Gravar conversa pede consentimento. Uma frase no começo resolve: "vou gravar para não perder nada, tudo bem?".</p></div>
+          <div class="done-row"><button class="done-btn" data-done="re-0" onclick="toggleDone('re',0)">Conectado</button><span class="done-hint">Ele resumiu a reunião de teste.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="re-step-1">
+        <summary><span class="st-num">1</span><span class="st-title">O prompt<small>Ele pergunta o que guardar de cada reunião, lê as gravações e monta o artefato</small></span><span class="st-done">concluído ✓</span><span class="st-time">~12 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Um prompt só. Ele pergunta o que você quer guardar de cada reunião, lê as últimas pelo conector e cria o painel. Sem conector, você conta cada reunião em cinco linhas e ele monta do mesmo jeito.</p>
+          <details class="prompt-toggle" open><summary>Abrir o prompt · minhas reuniões</summary>
+<div class="copy-block"><span class="label">Prompt · cole no claude.ai</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Quero acrescentar a seção "reuniões" ao meu painel "Meu dia", que já
+está publicado aqui: [cole o link do artefato]. Não mexa nas outras
+seções.
+
+Antes de montar, me faça NO MÁXIMO 3 perguntas para entender como eu
+vou usar:
+- de onde vêm as reuniões: Granola, Fireflies, ou eu conto o que
+  aconteceu
+- o que eu quero guardar de cada uma: decisões, pendências com
+  responsável, próximos passos, ou tudo isso
+- quais reuniões entram: todas, ou só de certos assuntos ou pessoas
+
+ARQUITETURA, siga exatamente:
+- um único ARTEFATO em HTML, publicado uma vez, com a capacidade "db"
+  (banco do artefato). Regra de acesso: leitura e escrita só para quem
+  pode editar. Só eu vejo os dados.
+- a página NÃO contém dados. Ao abrir, ela usa claude.use("db") e
+  assina (onSnapshot) um documento por seção, na coleção "painel".
+  Quando o documento muda, a seção redesenha. Sem dados, mostra
+  "sem dados ainda".
+- toda seção mostra "atualizado às HH:MM" (campo "updated" do
+  documento) e marca "desatualizado" depois de 8 horas.
+- nenhuma conversa ou tarefa republica a página para trocar dados:
+  dados mudam gravando o documento; visual muda republicando a página.
+- documento desta seção: painel/reunioes, no formato
+  {updated, minhas_pendencias:[{o_que, reuniao, dias}],
+  reunioes:[{data, com_quem, assunto, decisoes,
+  pendencias:[{quem, o_que}]}]}
+
+Regras de conteúdo: leia as reuniões dos últimos 7 dias pelo
+conector; sem conector, me peça para contar cada reunião em cinco
+linhas; decisões em uma ou duas frases; pendência minha vai em
+destaque; o que a gravação não deixar claro fica "a confirmar";
+nunca invente decisão.
+
+PASSOS:
+1. leia as reuniões agora, uma vez
+2. republique a página com a seção nova: as minhas pendências no
+   alto, um cartão por reunião, a mais recente primeiro
+3. grave o documento painel/reunioes (action set) e leia de volta
+4. me pergunte três coisas: o que sobrou, o que faltou, e o que eu
+   mudaria no visual. Ajuste com as minhas respostas.</div>
+          </details>
+          <p class="expect"><b>O que esperar:</b> até três perguntas, a leitura das reuniões, e um painel com as suas pendências no alto e um cartão por reunião. Se aparecer uma decisão que não foi tomada, é feedback.</p>
+          <div class="done-row"><button class="done-btn" data-done="re-1" onclick="toggleDone('re',1)">Artefato criado</button><span class="done-hint">O painel abriu com as reuniões de verdade.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="re-step-2">
+        <summary><span class="st-num">2</span><span class="st-title">Feedback<small>Duas rodadas de ajuste, na conversa</small></span><span class="st-done">concluído ✓</span><span class="st-time">~8 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Peça pelo menos duas mudanças. Exemplos que funcionam:</p>
+          <ul class="asks">
+            <li>Essa decisão não foi tomada, ficou em aberto. Corrige e marca "a confirmar".</li>
+            <li>Separa as pendências por pessoa: o que é meu, o que é da Tati.</li>
+            <li>Só reuniões sobre a reforma. O resto esconde.</li>
+            <li>Acrescenta a reunião de ontem, que não foi gravada: [cinco linhas].</li>
+            <li>Quem ficou com pendência há mais de uma semana, marca "cobrar".</li>
+            <li>Letra maior, um cartão por reunião.</li>
+          </ul>
+          <div class="tip-box"><div class="tip-label">Este é o bloco que alimenta os outros</div><p>Pendência de reunião vira to-do. Quando o bloco 4 estiver de pé, peça: "leva as minhas pendências destas reuniões para o painel de to-dos".</p></div>
+          <div class="done-row"><button class="done-btn" data-done="re-2" onclick="toggleDone('re',2)">Ajustado</button><span class="done-hint">Duas mudanças pedidas e feitas.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="re-step-3">
+        <summary><span class="st-num">3</span><span class="st-title">Deixar rodando<small>Receber o painel atualizado depois de cada dia de reuniões</small></span><span class="st-done">concluído ✓</span><span class="st-time">~5 min</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>No projeto, clique em <strong>Programado → Adicionar</strong> e cole o prompt abaixo, com o link do seu artefato. Para reuniões, o fim do dia costuma ser melhor que a manhã.</p>
+          <details class="prompt-toggle"><summary>Abrir o prompt · tarefa diária</summary>
+<div class="copy-block"><span class="label">Prompt · cole em Programado → Adicionar, no projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Crie uma tarefa agendada chamada "Meu dia · reuniões", que rode às
+[hora, por exemplo 19:00], [todos os dias ou só dias úteis]. Ela é a
+única dona do documento painel/reunioes do artefato:
+[cole aqui o link do artefato "Meu dia"]
+
+A sessão agendada não lembra de nada, então o prompt da tarefa
+precisa ser completo. Escreva nele:
+- o que guardar de cada reunião e quais entram: [copie da nossa
+  conversa]
+- ler as reuniões dos últimos 7 dias pelo conector do [Granola ou
+  Fireflies]
+- decisões em uma ou duas frases; pendências com responsável; o que
+  não ficou claro, "a confirmar"; nunca inventar
+- montar o JSON no formato {updated, minhas_pendencias:[{o_que,
+  reuniao, dias}], reunioes:[{data, com_quem, assunto, decisoes,
+  pendencias:[{quem, o_que}]}]}, com updated em ISO no fuso
+  America/Sao_Paulo
+- gravar com a ferramenta de banco do artefato: action set,
+  collection "painel", doc_id "reunioes"
+- não republicar a página nem escrever em outro documento
+- se o conector falhar, não gravar nada
+- no fim, ler o documento de volta e conferir
+
+Me mostre o nome, o horário e o prompt da tarefa antes de criar.
+Depois, me diga como ativar a aprovação automática nela e como rodar
+uma vez manualmente para testar.</div>
+          </details>
+          <div class="warn-box"><div class="tip-label">Um limite honesto</div><p>Reunião sem gravação só entra se você contar na conversa. O gravador precisa estar ligado: o painel não inventa o que não ouviu. Ative a aprovação automática na tarefa.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="re-3" onclick="toggleDone('re',3)">Tarefa criada</button><span class="done-hint">Bloco 5 fechado.</span></div>
+        </div>
+      </details>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var KEY='cos-guia-v5';
+  function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+  function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  var done=load(KEY,{});
+  var MODS={not:{id:'noticias',label:'Notícias',total:4},em:{id:'email',label:'E-mail',total:4},cal:{id:'calendario',label:'Calendário',total:4},td:{id:'todos',label:'To-dos',total:4},re:{id:'reunioes',label:'Reuniões',total:4}};
+  var current='noticias';
+  function modKey(id){for(var k in MODS)if(MODS[k].id===id)return k;return null}
+
+  function paint(){
+    for(var k in MODS){
+      var m=MODS[k], n=0;
+      for(var i=0;i<m.total;i++){
+        var d=!!done[k+'-'+i]; if(d)n++;
+        var step=document.getElementById(k+'-step-'+i); if(step)step.classList.toggle('done',d);
+        var btn=document.querySelector('[data-done="'+k+'-'+i+'"]'); if(btn){btn.classList.toggle('on',d); btn.textContent=d?'Concluído ✓':(btn.getAttribute('data-label')||btn.textContent);}
+        var sn=document.querySelector('.stepper-node[data-mod="'+k+'"][data-step="'+i+'"]'); if(sn)sn.classList.toggle('completed',d);
+      }
+      m.done=n;
+      var nav=document.querySelector('[data-module="'+m.id+'"]'); if(nav)nav.classList.toggle('completed',n===m.total);
+    }
+    var p=!!done.prep, q=!!done.quem;
+    var ps=document.getElementById('prep-step'); if(ps)ps.classList.toggle('done',p);
+    var pb=document.querySelector('[data-done="prep"]'); if(pb){pb.classList.toggle('on',p); pb.textContent=p?'Preparação concluída ✓':'Concluí a preparação';}
+    var qs=document.getElementById('quem-step'); if(qs)qs.classList.toggle('done',q);
+    var qb=document.querySelector('[data-done="quem"]'); if(qb){qb.classList.toggle('on',q); qb.textContent=q?'Concluído ✓':'Colei nas instruções';}
+    var pn=document.querySelector('[data-module="preparacao"]'); if(pn)pn.classList.toggle('completed',p&&q);
+    paintProgress();
+  }
+  function paintProgress(){
+    var k=modKey(current), lbl=document.getElementById('sp-label'), fill=document.getElementById('sp-fill');
+    if(k){lbl.textContent=MODS[k].label+' · '+MODS[k].done+' de '+MODS[k].total; fill.style.width=(MODS[k].done/MODS[k].total*100)+'%';}
+    else{var n=(done.prep?1:0)+(done.quem?1:0); lbl.textContent='Preparação · '+n+' de 2'; fill.style.width=(n/2*100)+'%';}
+  }
+  window.toggleDone=function(k,i){
+    if(k==='prep'||k==='quem'){ done[k]=!done[k]; if(!done[k])delete done[k]; save(KEY,done); paint();
+      if(k==='quem'&&done.quem){ var q=document.getElementById('quem-step'); var p0=document.getElementById('prep-step'); if(q)q.open=false; if(p0){p0.open=true; setTimeout(function(){p0.scrollIntoView({behavior:'smooth',block:'start'})},60);} }
+      if(k==='prep'&&done.prep){ showModule('noticias'); }
+      return; }
+    var key=k+'-'+i; done[key]=!done[key]; if(!done[key])delete done[key]; save(KEY,done); paint();
+    if(done[key]){
+      var cur=document.getElementById(k+'-step-'+i); if(cur)cur.open=false;
+      var next=document.getElementById(k+'-step-'+(i+1)); if(next){next.open=true; setTimeout(function(){next.scrollIntoView({behavior:'smooth',block:'start'})},60); setActive(k,i+1);}
+    }
+  };
+  function setActive(k,i){
+    var nodes=document.querySelectorAll('.stepper-node[data-mod="'+k+'"]'); for(var x=0;x<nodes.length;x++)nodes[x].classList.toggle('active',+nodes[x].getAttribute('data-step')===i);
+  }
+  window.goStep=function(k,i){
+    var s=document.getElementById(k+'-step-'+i); if(!s)return;
+    s.open=true; setActive(k,i);
+    setTimeout(function(){s.scrollIntoView({behavior:'smooth',block:'start'})},40);
+  };
+  window.showModule=function(id){
+    current=id;
+    var secs=document.querySelectorAll('.section'); for(var x=0;x<secs.length;x++)secs[x].classList.toggle('active',secs[x].id==='mod-'+id);
+    var items=document.querySelectorAll('.nav-item[data-module]'); for(var x=0;x<items.length;x++)items[x].classList.toggle('active',items[x].getAttribute('data-module')===id);
+    var mb=document.querySelectorAll('#mobile-nav button'); for(var x=0;x<mb.length;x++)mb[x].classList.toggle('active',mb[x].getAttribute('data-m')===id);
+    paintProgress();
+    window.scrollTo({top:0});
+  };
+  window.copyPrompt=function(btn){
+    var block=btn.closest('.copy-block');
+    var clone=block.cloneNode(true); var l=clone.querySelector('.label'); if(l)l.remove(); var b=clone.querySelector('.copy-btn'); if(b)b.remove();
+    var text=clone.textContent.replace(/^\s+/,'');
+    function ok(){btn.textContent='Copiado ✓';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copiar';btn.classList.remove('copied')},1800)}
+    function fallback(){try{var r=document.createRange();r.selectNodeContents(block);var sel=window.getSelection();sel.removeAllRanges();sel.addRange(r);if(document.execCommand('copy'))ok();else btn.textContent='Selecione e copie'}catch(e){btn.textContent='Selecione e copie'}}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok).catch(fallback)}else{fallback()}
+  };
+  var btns=document.querySelectorAll('.done-btn[data-done]');
+  for(var b=0;b<btns.length;b++)btns[b].setAttribute('data-label',btns[b].textContent);
+  var steps=document.querySelectorAll('.step[id*="-step-"]');
+  for(var s=0;s<steps.length;s++){steps[s].addEventListener('toggle',function(){if(this.open){var m=/^(\w+)-step-(\d)$/.exec(this.id); if(m&&MODS[m[1]])setActive(m[1],+m[2]);}})}
+  paint();
+  if(done.quem&&!done.prep){var q0=document.getElementById('quem-step'); if(q0)q0.open=false; var p0=document.getElementById('prep-step'); if(p0)p0.open=true;}
+  for(var k in MODS){
+    var m=MODS[k], first=0;
+    for(var i=0;i<m.total;i++){if(!done[k+'-'+i]){first=i;break} if(i===m.total-1)first=m.total-1}
+    if(first>0){var s0=document.getElementById(k+'-step-0'); if(s0)s0.open=false; var f=document.getElementById(k+'-step-'+first); if(f)f.open=true;}
+    setActive(k,first);
+  }
+  showModule((done.prep&&done.quem)?'noticias':'preparacao');
+})();
+</script>
+</body>
+</html>
