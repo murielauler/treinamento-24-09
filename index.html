@@ -134,8 +134,8 @@
   <button data-m="noticias" class="active" onclick="showModule('noticias')">1 · Notícias</button>
   <button data-m="email" onclick="showModule('email')">2 · E-mail</button>
   <button data-m="calendario" onclick="showModule('calendario')">3 · Calendário</button>
-  <button data-m="todos" onclick="showModule('todos')">4 · To-dos</button>
-  <button data-m="reunioes" onclick="showModule('reunioes')">5 · Reuniões</button>
+  <button data-m="reunioes" onclick="showModule('reunioes')">4 · Reuniões</button>
+  <button data-m="todos" onclick="showModule('todos')">5 · To-dos</button>
 </div>
 
 <div class="layout">
@@ -157,8 +157,8 @@
       <a class="nav-item active" data-module="noticias" onclick="showModule('noticias')"><span class="ni-num">1</span> Notícias do dia <span class="ni-check">&#10003;</span></a>
       <a class="nav-item" data-module="email" onclick="showModule('email')"><span class="ni-num">2</span> E-mail <span class="ni-check">&#10003;</span></a>
       <a class="nav-item" data-module="calendario" onclick="showModule('calendario')"><span class="ni-num">3</span> Calendário <span class="ni-check">&#10003;</span></a>
-      <a class="nav-item" data-module="todos" onclick="showModule('todos')"><span class="ni-num">4</span> Lista de to-dos <span class="ni-check">&#10003;</span></a>
-      <a class="nav-item" data-module="reunioes" onclick="showModule('reunioes')"><span class="ni-num">5</span> Reuniões via Granola ou Fireflies <span class="ni-check">&#10003;</span></a>
+      <a class="nav-item" data-module="reunioes" onclick="showModule('reunioes')"><span class="ni-num">4</span> Reuniões via Granola ou Fireflies <span class="ni-check">&#10003;</span></a>
+      <a class="nav-item" data-module="todos" onclick="showModule('todos')"><span class="ni-num">5</span> Lista de to-dos <span class="ni-check">&#10003;</span></a>
     </div>
 
     <div class="sidebar-progress">
@@ -655,10 +655,74 @@ uma vez manualmente para testar.</div>
       </details>
     </section>
 
-    <!-- ================= 4 · TO-DOS ================= -->
+    
+    <!-- ================= 4 · REUNIÕES ================= -->
+    <section class="section" id="mod-reunioes">
+      <div class="sec-head">
+        <h1 class="sec-title"><span class="snum">04</span> Reuniões via Granola ou Fireflies</h1>
+        <p class="sec-desc">Aqui não tem seção nova no painel. As reuniões viram contexto: o assistente consulta as gravações quando você pergunta.</p>
+      </div>
+      <div class="stepper">
+        <div class="stepper-node active" data-mod="re" data-step="0" onclick="goStep('re',0)"><span class="sn-check">&#10003;</span><span class="sn-label">Conectar</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="re" data-step="1" onclick="goStep('re',1)"><span class="sn-check">&#10003;</span><span class="sn-label">Instrução</span></div><span class="stepper-arrow">&#8594;</span>
+        <div class="stepper-node" data-mod="re" data-step="2" onclick="goStep('re',2)"><span class="sn-check">&#10003;</span><span class="sn-label">Usar</span></div>
+      </div>
+
+      <details class="step" id="re-step-0" open>
+        <summary><span class="st-num">0</span><span class="st-title">Conectar o gravador<small>Granola ou Fireflies</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <div class="instructions">
+            <div class="inst"><span class="inst-num">1</span><span class="inst-text">Instale o <strong>Granola</strong> no celular e no computador. Ele grava reunião presencial e videochamada e faz as notas sozinho. Quem já usa o <strong>Fireflies</strong> segue com ele.</span></div>
+            <div class="inst"><span class="inst-num">2</span><span class="inst-text">No claude.ai, em <strong>Configurações → Conectores</strong>, conecte o Granola (ou o Fireflies).</span></div>
+            <div class="inst"><span class="inst-num">3</span><span class="inst-text">Grave uma reunião de teste de dois minutos. Depois, numa conversa do projeto: <span class="field">resume a minha última reunião</span>.</span></div>
+          </div>
+          <div class="warn-box"><div class="tip-label">Avise quem está na sala</div><p>Gravar conversa pede consentimento. Uma frase no começo resolve: "vou gravar para não perder nada, tudo bem?".</p></div>
+          <div class="done-row"><button class="done-btn" data-done="re-0" onclick="toggleDone('re',0)">Conectado</button><span class="done-hint">Ele resumiu a reunião de teste.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="re-step-1">
+        <summary><span class="st-num">1</span><span class="st-title">Avisar o agente<small>Ele mesmo atualiza as instruções do projeto</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>Se você colou o texto de instruções do bloco "Crie o projeto", o agente já sabe que pode consultar as reuniões. Se não colou, ou quer ajustar, peça a ele na conversa:</p>
+          <details class="prompt-toggle" open><summary>Abrir o prompt · atualizar as instruções</summary>
+<div class="copy-block"><span class="label">Prompt · cole na conversa do projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Atualize as instruções deste projeto: acrescente que você pode usar
+o conector do [Granola ou Fireflies] para buscar o contexto das minhas
+reuniões (decisões, pendências, o que foi combinado) sempre que eu
+perguntar, sem gravar nada no painel a menos que eu peça. Me devolva
+o texto completo das instruções, já com essa parte, para eu colar em
+Instruções no projeto.</div>
+          </details>
+          <p class="expect"><b>O que esperar:</b> o texto completo das instruções, com a parte de reuniões. Copie, abra <strong>Instruções</strong> no projeto, cole por cima e salve.</p>
+          <div class="done-row"><button class="done-btn" data-done="re-1" onclick="toggleDone('re',1)">Instruções atualizadas</button><span class="done-hint">Salvas no projeto.</span></div>
+        </div>
+      </details>
+          <div class="done-row"><button class="done-btn" data-done="re-1" onclick="toggleDone('re',1)">Linha colada</button><span class="done-hint">Instruções salvas.</span></div>
+        </div>
+      </details>
+
+      <details class="step" id="re-step-2">
+        <summary><span class="st-num">2</span><span class="st-title">Usar no dia a dia<small>Perguntas de uma linha, na conversa</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
+        <div class="step-body">
+          <p>A partir daqui, o assistente busca nas gravações quando você pergunta. Exemplos:</p>
+          <ul class="asks">
+            <li>O que ficou decidido na reunião com o arquiteto?</li>
+            <li>O que eu fiquei devendo nas reuniões desta semana?</li>
+            <li>Quem ficou de me mandar o orçamento, e quando?</li>
+            <li>Me prepara para a reunião de amanhã com base na última que tivemos.</li>
+            <li>Escreve um resumo curto da reunião de hoje para eu mandar por e-mail.</li>
+            <li>Leva as minhas pendências da reunião de hoje para o painel de to-dos.</li>
+          </ul>
+          <div class="tip-box"><div class="tip-label">Quando reunião vira to-do</div><p>A última pergunta acima é a ponte: só quando você pedir, o assistente regrava o documento de to-dos com as pendências da reunião. O painel não muda sozinho a partir das gravações.</p></div>
+          <div class="done-row"><button class="done-btn" data-done="re-2" onclick="toggleDone('re',2)">Testei uma pergunta</button><span class="done-hint">Bloco 4 fechado.</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= 5 · TO-DOS ================= -->
     <section class="section" id="mod-todos">
       <div class="sec-head">
-        <h1 class="sec-title"><span class="snum">04</span> Lista de to-dos</h1>
+        <h1 class="sec-title"><span class="snum">05</span> Lista de to-dos</h1>
         <p class="sec-desc">O que você deve fazer e o que está esperando de alguém, num lugar só. Começa com o que você ditar; se o e-mail estiver conectado, ele complementa.</p>
       </div>
       <div class="stepper">
@@ -786,70 +850,7 @@ Depois, me diga como ativar a aprovação automática nela e como rodar
 uma vez manualmente para testar.</div>
           </details>
           <div class="warn-box"><div class="tip-label">Um limite honesto</div><p>Aqui há dois escritores no mesmo documento: a tarefa diária e você, quando diz "concluí X" na conversa. Vale a última gravação. Por isso a tarefa lê o documento antes de gravar e nunca apaga o que está nele. Ative a aprovação automática na tarefa.</p></div>
-          <div class="done-row"><button class="done-btn" data-done="td-3" onclick="toggleDone('td',3)">Tarefa criada</button><span class="done-hint">Bloco 4 fechado.</span></div>
-        </div>
-      </details>
-    </section>
-
-    <!-- ================= 5 · REUNIÕES ================= -->
-    <section class="section" id="mod-reunioes">
-      <div class="sec-head">
-        <h1 class="sec-title"><span class="snum">05</span> Reuniões via Granola ou Fireflies</h1>
-        <p class="sec-desc">Aqui não tem seção nova no painel. As reuniões viram contexto: o assistente consulta as gravações quando você pergunta.</p>
-      </div>
-      <div class="stepper">
-        <div class="stepper-node active" data-mod="re" data-step="0" onclick="goStep('re',0)"><span class="sn-check">&#10003;</span><span class="sn-label">Conectar</span></div><span class="stepper-arrow">&#8594;</span>
-        <div class="stepper-node" data-mod="re" data-step="1" onclick="goStep('re',1)"><span class="sn-check">&#10003;</span><span class="sn-label">Instrução</span></div><span class="stepper-arrow">&#8594;</span>
-        <div class="stepper-node" data-mod="re" data-step="2" onclick="goStep('re',2)"><span class="sn-check">&#10003;</span><span class="sn-label">Usar</span></div>
-      </div>
-
-      <details class="step" id="re-step-0" open>
-        <summary><span class="st-num">0</span><span class="st-title">Conectar o gravador<small>Granola ou Fireflies</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
-        <div class="step-body">
-          <div class="instructions">
-            <div class="inst"><span class="inst-num">1</span><span class="inst-text">Instale o <strong>Granola</strong> no celular e no computador. Ele grava reunião presencial e videochamada e faz as notas sozinho. Quem já usa o <strong>Fireflies</strong> segue com ele.</span></div>
-            <div class="inst"><span class="inst-num">2</span><span class="inst-text">No claude.ai, em <strong>Configurações → Conectores</strong>, conecte o Granola (ou o Fireflies).</span></div>
-            <div class="inst"><span class="inst-num">3</span><span class="inst-text">Grave uma reunião de teste de dois minutos. Depois, numa conversa do projeto: <span class="field">resume a minha última reunião</span>.</span></div>
-          </div>
-          <div class="warn-box"><div class="tip-label">Avise quem está na sala</div><p>Gravar conversa pede consentimento. Uma frase no começo resolve: "vou gravar para não perder nada, tudo bem?".</p></div>
-          <div class="done-row"><button class="done-btn" data-done="re-0" onclick="toggleDone('re',0)">Conectado</button><span class="done-hint">Ele resumiu a reunião de teste.</span></div>
-        </div>
-      </details>
-
-      <details class="step" id="re-step-1">
-        <summary><span class="st-num">1</span><span class="st-title">Avisar o agente<small>Ele mesmo atualiza as instruções do projeto</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
-        <div class="step-body">
-          <p>Se você colou o texto de instruções do bloco "Crie o projeto", o agente já sabe que pode consultar as reuniões. Se não colou, ou quer ajustar, peça a ele na conversa:</p>
-          <details class="prompt-toggle" open><summary>Abrir o prompt · atualizar as instruções</summary>
-<div class="copy-block"><span class="label">Prompt · cole na conversa do projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Atualize as instruções deste projeto: acrescente que você pode usar
-o conector do [Granola ou Fireflies] para buscar o contexto das minhas
-reuniões (decisões, pendências, o que foi combinado) sempre que eu
-perguntar, sem gravar nada no painel a menos que eu peça. Me devolva
-o texto completo das instruções, já com essa parte, para eu colar em
-Instruções no projeto.</div>
-          </details>
-          <p class="expect"><b>O que esperar:</b> o texto completo das instruções, com a parte de reuniões. Copie, abra <strong>Instruções</strong> no projeto, cole por cima e salve.</p>
-          <div class="done-row"><button class="done-btn" data-done="re-1" onclick="toggleDone('re',1)">Instruções atualizadas</button><span class="done-hint">Salvas no projeto.</span></div>
-        </div>
-      </details>
-          <div class="done-row"><button class="done-btn" data-done="re-1" onclick="toggleDone('re',1)">Linha colada</button><span class="done-hint">Instruções salvas.</span></div>
-        </div>
-      </details>
-
-      <details class="step" id="re-step-2">
-        <summary><span class="st-num">2</span><span class="st-title">Usar no dia a dia<small>Perguntas de uma linha, na conversa</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
-        <div class="step-body">
-          <p>A partir daqui, o assistente busca nas gravações quando você pergunta. Exemplos:</p>
-          <ul class="asks">
-            <li>O que ficou decidido na reunião com o arquiteto?</li>
-            <li>O que eu fiquei devendo nas reuniões desta semana?</li>
-            <li>Quem ficou de me mandar o orçamento, e quando?</li>
-            <li>Me prepara para a reunião de amanhã com base na última que tivemos.</li>
-            <li>Escreve um resumo curto da reunião de hoje para eu mandar por e-mail.</li>
-            <li>Leva as minhas pendências da reunião de hoje para o painel de to-dos.</li>
-          </ul>
-          <div class="tip-box"><div class="tip-label">Quando reunião vira to-do</div><p>A última pergunta acima é a ponte: só quando você pedir, o assistente regrava o documento de to-dos com as pendências da reunião. O painel não muda sozinho a partir das gravações.</p></div>
-          <div class="done-row"><button class="done-btn" data-done="re-2" onclick="toggleDone('re',2)">Testei uma pergunta</button><span class="done-hint">Bloco 5 fechado.</span></div>
+          <div class="done-row"><button class="done-btn" data-done="td-3" onclick="toggleDone('td',3)">Tarefa criada</button><span class="done-hint">Bloco 5 fechado.</span></div>
         </div>
       </details>
     </section>
