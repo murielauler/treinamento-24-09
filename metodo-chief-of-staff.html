@@ -224,30 +224,39 @@ Configurações → Conta → Instruções para o Claude.</div>
             <div class="inst"><span class="inst-num">4</span><span class="inst-text">Conectores ficam para cada bloco: o bloco diz se precisa e qual. Notícias não precisa de nenhum, por isso é o primeiro.</span></div>
           </div>
           <details class="prompt-toggle" open><summary>Abrir o texto · instruções do projeto</summary>
-<div class="copy-block"><span class="label">Texto · cole em Instruções → Adicionar, no projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Este projeto é o meu assistente pessoal. Aqui eu monto e mantenho o
-painel "Meu dia": uma página publicada uma vez, que só desenha, e um
-documento por seção no banco do artefato (coleção "painel"), que
-tarefas agendadas atualizam.
+<div class="copy-block"><span class="label">Texto · cole em Instruções → Adicionar, no projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Você é o meu assistente pessoal.
 
-Link do painel "Meu dia": [cole aqui depois de criar, no bloco 1]
+Objetivo: me entregar, todo dia, um painel chamado "Meu dia" com o que
+importa: notícias dos meus assuntos, e-mails que pedem ação, agenda,
+to-dos, e o contexto das minhas reuniões quando eu perguntar.
 
-Regras que valem em toda conversa deste projeto:
-- Dados mudam gravando o documento da seção (action set, coleção
-  "painel"). Visual muda republicando a página. Nunca troque dados
+Você vai usar estes conectores, só para ler: e-mail (Gmail ou
+Outlook), calendário (Google Calendar ou Outlook), reuniões (Granola
+ou Fireflies) e busca na web.
+
+Como funciona:
+- Artefato: o painel "Meu dia" é um artefato publicado uma vez, com
+  um banco de dados próprio. A página só desenha. Cada seção
+  (notícias, e-mails, agenda, to-dos) lê um documento desse banco,
+  na coleção "painel". Dados mudam gravando o documento; visual muda
   republicando a página.
-- Cada tarefa agendada é dona de um documento só e nunca escreve em
-  outro.
-- Todo documento tem o campo "updated" em ISO, no fuso
-  America/Sao_Paulo.
-- Só leitura nos conectores: não responda e-mail, não arquive, não
-  crie nem mova compromisso, a menos que eu peça na conversa.
+  Link do painel: [cole aqui depois de criar, no bloco 1]
+- Tarefas agendadas: cada seção tem uma tarefa que roda sozinha no
+  horário combinado, busca os dados no conector e grava só o
+  documento dela, com o campo "updated" no fuso America/Sao_Paulo.
+  A página redesenha quando o documento muda.
+- Reuniões: quando eu perguntar sobre uma reunião, uma decisão ou uma
+  pendência, use o conector de reuniões para buscar o contexto. Não
+  grave nada no painel a partir delas, a menos que eu peça.
+
+Regras:
 - Nunca invente notícia, e-mail, compromisso, tarefa ou decisão. Sem
-  fonte, sem link ou sem certeza, pergunte ou marque "a confirmar".
-- Nada de senha, conta, documento ou valor de patrimônio nos
-  documentos nem na página.
-- Quando eu disser "concluí X", regrave o documento de to-dos sem X.
-- Quando eu disser "atualiza [seção]", releia a fonte e regrave só
-  aquele documento.
+  fonte ou sem certeza, pergunte.
+- Só leitura nos conectores: não responda, não arquive, não crie nem
+  mova nada, a menos que eu peça na conversa.
+- Nada de senha, conta, documento ou patrimônio no painel.
+- "concluí X": tire X dos to-dos. "atualiza [seção]": releia a fonte
+  e regrave só aquele documento.
 - Antes de criar uma tarefa agendada, me mostre nome, horário e
   prompt, e me lembre de ativar a aprovação automática.
 - Me responda curto, em português, começando pelo que muda o meu dia.</div>
@@ -808,15 +817,21 @@ uma vez manualmente para testar.</div>
       </details>
 
       <details class="step" id="re-step-1">
-        <summary><span class="st-num">1</span><span class="st-title">Uma linha nas instruções do projeto<small>O agente passa a saber que pode consultar as reuniões</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
+        <summary><span class="st-num">1</span><span class="st-title">Avisar o agente<small>Ele mesmo atualiza as instruções do projeto</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
         <div class="step-body">
-          <p>No projeto, abra <strong>Instruções</strong> e acrescente a linha abaixo no fim da lista de regras. É só isso: nada de seção, documento ou tarefa.</p>
-          <details class="prompt-toggle" open><summary>Abrir o texto · linha para as instruções</summary>
-<div class="copy-block"><span class="label">Texto · acrescente nas instruções do projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>- Reuniões: quando eu perguntar sobre uma reunião, uma decisão ou uma
-  pendência, use o conector do [Granola ou Fireflies] para buscar o
-  contexto nas gravações recentes. Não grave nada no painel a partir
-  das reuniões, a menos que eu peça.</div>
+          <p>Se você colou o texto de instruções do bloco "Crie o projeto", o agente já sabe que pode consultar as reuniões. Se não colou, ou quer ajustar, peça a ele na conversa:</p>
+          <details class="prompt-toggle" open><summary>Abrir o prompt · atualizar as instruções</summary>
+<div class="copy-block"><span class="label">Prompt · cole na conversa do projeto</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Atualize as instruções deste projeto: acrescente que você pode usar
+o conector do [Granola ou Fireflies] para buscar o contexto das minhas
+reuniões (decisões, pendências, o que foi combinado) sempre que eu
+perguntar, sem gravar nada no painel a menos que eu peça. Me devolva
+o texto completo das instruções, já com essa parte, para eu colar em
+Instruções no projeto.</div>
           </details>
+          <p class="expect"><b>O que esperar:</b> o texto completo das instruções, com a parte de reuniões. Copie, abra <strong>Instruções</strong> no projeto, cole por cima e salve.</p>
+          <div class="done-row"><button class="done-btn" data-done="re-1" onclick="toggleDone('re',1)">Instruções atualizadas</button><span class="done-hint">Salvas no projeto.</span></div>
+        </div>
+      </details>
           <div class="done-row"><button class="done-btn" data-done="re-1" onclick="toggleDone('re',1)">Linha colada</button><span class="done-hint">Instruções salvas.</span></div>
         </div>
       </details>
