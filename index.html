@@ -129,7 +129,8 @@
 <body>
 
 <div class="mobile-nav" id="mobile-nav">
-  <button data-m="preparacao" onclick="showModule('preparacao')">Preparação</button>
+  <button data-m="sobre" onclick="showModule('sobre')">Sobre mim</button>
+  <button data-m="projeto" onclick="showModule('projeto')">Projeto</button>
   <button data-m="noticias" class="active" onclick="showModule('noticias')">1 · Notícias</button>
   <button data-m="email" onclick="showModule('email')">2 · E-mail</button>
   <button data-m="calendario" onclick="showModule('calendario')">3 · Calendário</button>
@@ -147,7 +148,8 @@
 
     <div class="nav-group">
       <div class="nav-group-title">Antes de começar</div>
-      <a class="nav-item" data-module="preparacao" onclick="showModule('preparacao')"><span class="ni-num">0</span> Preparação <span class="ni-check">&#10003;</span></a>
+      <a class="nav-item" data-module="sobre" onclick="showModule('sobre')"><span class="ni-num">1</span> Configure o sobre mim no Claude <span class="ni-check">&#10003;</span></a>
+      <a class="nav-item" data-module="projeto" onclick="showModule('projeto')"><span class="ni-num">2</span> Crie o projeto <span class="ni-check">&#10003;</span></a>
     </div>
 
     <div class="nav-group">
@@ -167,14 +169,14 @@
 
   <main class="main">
 
-    <!-- ================= PREPARAÇÃO ================= -->
-    <section class="section" id="mod-preparacao">
+    <!-- ================= ANTES DE COMEÇAR · 1 ================= -->
+    <section class="section" id="mod-sobre">
       <div class="sec-head">
-        <h1 class="sec-title"><span class="snum">00</span> Preparação</h1>
-        <p class="sec-desc">Dois passos, uma vez só: dizer ao Claude quem você é, e criar o projeto onde o assistente vai morar. Tudo na sua conta, nada no computador.</p>
+        <h1 class="sec-title"><span class="snum">01</span> Configure o sobre mim no Claude</h1>
+        <p class="sec-desc">Um texto curto na sua conta, e todo agente passa a saber com quem está falando. Uma vez só.</p>
       </div>
       <details class="step" id="quem-step" open>
-        <summary><span class="st-num">0</span><span class="st-title">Instruções para o Claude<small>O "quem sou eu" na sua conta: todo agente fica mais específico</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
+        <summary><span class="st-num">1</span><span class="st-title">Instruções para o Claude<small>O "quem sou eu" na sua conta: todo agente fica mais específico</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
         <div class="step-body">
           <p>O Claude tem um campo que vale para todas as conversas: <strong>Instruções para o Claude</strong>, em Configurações → Conta. O que você escrever ali, ele lê antes de qualquer prompt. Dois parágrafos bastam: quem você é, e como quer ser respondida. O prompt abaixo entrevista você e escreve o texto.</p>
           <div class="instructions">
@@ -204,8 +206,16 @@ patrimônio.
 Me mostre para eu ajustar, e me lembre onde colar:
 Configurações → Conta → Instruções para o Claude.</div>
           </details>
-      <details class="step" id="prep-step">
-        <summary><span class="st-num">1</span><span class="st-title">Criar o projeto<small>A pasta do assistente, com a instrução do agente dentro</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
+    </section>
+
+    <!-- ================= ANTES DE COMEÇAR · 2 ================= -->
+    <section class="section" id="mod-projeto">
+      <div class="sec-head">
+        <h1 class="sec-title"><span class="snum">02</span> Crie o projeto</h1>
+        <p class="sec-desc">A pasta onde o assistente vai morar, com a instrução do agente dentro. Tudo na sua conta, nada no computador.</p>
+      </div>
+      <details class="step" id="prep-step" open>
+        <summary><span class="st-num">2</span><span class="st-title">Criar o projeto<small>A pasta do assistente, com a instrução do agente dentro</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
         <div class="step-body">
           <div class="instructions">
             <div class="inst"><span class="inst-num">1</span><span class="inst-text">Abra <strong>claude.ai</strong> no navegador, ou o app do Claude, com a sua conta.</span></div>
@@ -240,19 +250,6 @@ Regras que valem em toda conversa deste projeto:
   prompt, e me lembre de ativar a aprovação automática.
 - Me responda curto, em português, começando pelo que muda o meu dia.</div>
           </details>
-          <p class="expect"><b>Para conferir:</b> abra uma conversa nova no projeto e pergunte <span class="field">quais são as regras deste projeto?</span>. Ele deve repetir o essencial.</p>
-          <div class="warn-box"><div class="tip-label">O que muda em relação a abril</div><p>Em abril os dados ficavam no seu computador. Agora ficam na sua conta Claude. É o que permite o painel chegar pronto de manhã com o computador desligado.</p></div>
-          <div class="tip-box"><div class="tip-label">Como o painel funciona</div><p><b>Um painel, um link.</b> A página só desenha. Cada bloco é uma seção, e cada seção tem um documento próprio no banco do artefato e uma tarefa agendada que é a única a gravar nele. Quando o documento muda, a seção redesenha e mostra "atualizado às HH:MM". Se uma tarefa falhar, a seção avisa "desatualizado" em vez de sumir.</p></div>
-          <div class="done-row"><button class="done-btn" data-done="prep" onclick="toggleDone('prep',0)">Concluí a preparação</button><span class="done-hint">O check fica salvo neste navegador.</span></div>
-        </div>
-      </details>
-    
-      
-          <div class="tip-box"><div class="tip-label">Exemplo do formato</div><p>"Eu sou a Ana, cuido da agenda, da casa e das viagens da família, e assessoro o Carlos nos assuntos da empresa. Moro em Belo Horizonte e leio tudo no celular, de manhã.<br><br>Quando me responder: seja curta e direta, em português, e comece pelo que vence primeiro. Pergunte antes de assumir. Nunca invente dado, nunca responda e-mail no meu lugar e me avise quando algo depender do Carlos."</p></div>
-          <div class="warn-box"><div class="tip-label">O que não vai aí</div><p>Senha, número de conta, documento, valor de patrimônio. O texto vale para todas as conversas da conta, então ele deve ser útil e inofensivo ao mesmo tempo.</p></div>
-          <div class="done-row"><button class="done-btn" data-done="quem" onclick="toggleDone('quem',0)">Colei nas instruções</button><span class="done-hint">O teste "o que você sabe sobre mim?" passou.</span></div>
-        </div>
-      </details>
     </section>
 
     <!-- ================= 1 · NOTÍCIAS ================= -->
@@ -941,17 +938,18 @@ uma vez manualmente para testar.</div>
     var pb=document.querySelector('[data-done="prep"]'); if(pb){pb.classList.toggle('on',p); pb.textContent=p?'Preparação concluída ✓':'Concluí a preparação';}
     var qs=document.getElementById('quem-step'); if(qs)qs.classList.toggle('done',q);
     var qb=document.querySelector('[data-done="quem"]'); if(qb){qb.classList.toggle('on',q); qb.textContent=q?'Concluído ✓':'Colei nas instruções';}
-    var pn=document.querySelector('[data-module="preparacao"]'); if(pn)pn.classList.toggle('completed',p&&q);
+    var sn=document.querySelector('[data-module="sobre"]'); if(sn)sn.classList.toggle('completed',q);
+    var pn=document.querySelector('[data-module="projeto"]'); if(pn)pn.classList.toggle('completed',p);
     paintProgress();
   }
   function paintProgress(){
     var k=modKey(current), lbl=document.getElementById('sp-label'), fill=document.getElementById('sp-fill');
     if(k){lbl.textContent=MODS[k].label+' · '+MODS[k].done+' de '+MODS[k].total; fill.style.width=(MODS[k].done/MODS[k].total*100)+'%';}
-    else{var n=(done.prep?1:0)+(done.quem?1:0); lbl.textContent='Preparação · '+n+' de 2'; fill.style.width=(n/2*100)+'%';}
+    else{var d=current==='sobre'?!!done.quem:current==='projeto'?!!done.prep:false; lbl.textContent=(current==='sobre'?'Sobre mim':'Projeto')+' · '+(d?'concluído':'pendente'); fill.style.width=(d?100:0)+'%';}
   }
   window.toggleDone=function(k,i){
     if(k==='prep'||k==='quem'){ done[k]=!done[k]; if(!done[k])delete done[k]; save(KEY,done); paint();
-      if(k==='quem'&&done.quem){ var q=document.getElementById('quem-step'); var p0=document.getElementById('prep-step'); if(q)q.open=false; if(p0){p0.open=true; setTimeout(function(){p0.scrollIntoView({behavior:'smooth',block:'start'})},60);} }
+      if(k==='quem'&&done.quem){ showModule('projeto'); }
       if(k==='prep'&&done.prep){ showModule('noticias'); }
       return; }
     var key=k+'-'+i; done[key]=!done[key]; if(!done[key])delete done[key]; save(KEY,done); paint();
@@ -989,14 +987,13 @@ uma vez manualmente para testar.</div>
   var steps=document.querySelectorAll('.step[id*="-step-"]');
   for(var s=0;s<steps.length;s++){steps[s].addEventListener('toggle',function(){if(this.open){var m=/^(\w+)-step-(\d)$/.exec(this.id); if(m&&MODS[m[1]])setActive(m[1],+m[2]);}})}
   paint();
-  if(done.quem&&!done.prep){var q0=document.getElementById('quem-step'); if(q0)q0.open=false; var p0=document.getElementById('prep-step'); if(p0)p0.open=true;}
   for(var k in MODS){
     var m=MODS[k], first=0;
     for(var i=0;i<m.total;i++){if(!done[k+'-'+i]){first=i;break} if(i===m.total-1)first=m.total-1}
     if(first>0){var s0=document.getElementById(k+'-step-0'); if(s0)s0.open=false; var f=document.getElementById(k+'-step-'+first); if(f)f.open=true;}
     setActive(k,first);
   }
-  showModule((done.prep&&done.quem)?'noticias':'preparacao');
+  showModule(!done.quem?'sobre':!done.prep?'projeto':'noticias');
 })();
 </script>
 </body>
