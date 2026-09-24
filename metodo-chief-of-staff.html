@@ -229,6 +229,8 @@ painel "Meu dia": uma página publicada uma vez, que só desenha, e um
 documento por seção no banco do artefato (coleção "painel"), que
 tarefas agendadas atualizam.
 
+Link do painel "Meu dia": [cole aqui depois de criar, no bloco 1]
+
 Regras que valem em toda conversa deste projeto:
 - Dados mudam gravando o documento da seção (action set, coleção
   "painel"). Visual muda republicando a página. Nunca troque dados
@@ -268,7 +270,7 @@ Regras que valem em toda conversa deste projeto:
       <details class="step" id="not-step-0" open>
         <summary><span class="st-num">0</span><span class="st-title">Conectar<small>Nada a conectar aqui</small></span><span class="st-done">concluído ✓</span><span class="st-chev">▾</span></summary>
         <div class="step-body">
-          <p>Notícia vem da busca na web, que o Claude já tem. Só confira que você está dentro do projeto <strong>Meu Assistente pessoal</strong> e abra uma conversa nova. Este bloco cria o painel; os outros acrescentam seções a ele.</p>
+          <p>Notícia vem da busca na web, que o Claude já tem. Só confira que você está dentro do projeto <strong>Meu Assistente pessoal</strong> e abra uma conversa nova. Este bloco cria o painel; os outros acrescentam seções a ele, cada um numa conversa nova do mesmo projeto.</p>
           <div class="done-row"><button class="done-btn" data-done="not-0" onclick="toggleDone('not',0)">Pronto</button><span class="done-hint">Conversa nova aberta dentro do projeto.</span></div>
         </div>
       </details>
@@ -338,7 +340,7 @@ PASSOS:
             <li>Acrescenta o assunto "obras na cidade".</li>
             <li>Me mostra só o que saiu hoje.</li>
           </ul>
-          <div class="tip-box"><div class="tip-label">A regra que vale para todos os blocos</div><p>Conteúdo errado, você corrige dizendo o que quer e o que não quer: o Claude regrava o documento. Visual errado, você descreve como gostaria: ele republica a página. Nunca aceite um item sem link ou sem fonte. E guarde o link do artefato: os próximos blocos pedem ele.</p></div>
+          <div class="tip-box"><div class="tip-label">A regra que vale para todos os blocos</div><p>Conteúdo errado, você corrige dizendo o que quer e o que não quer: o Claude regrava o documento. Visual errado, você descreve como gostaria: ele republica a página. Nunca aceite um item sem link ou sem fonte. E cole o link do artefato nas instruções do projeto, na linha "Link do painel": os próximos blocos, em conversas novas, vão precisar dele.</p></div>
           <div class="done-row"><button class="done-btn" data-done="not-2" onclick="toggleDone('not',2)">Ajustado</button><span class="done-hint">Duas mudanças pedidas e feitas.</span></div>
         </div>
       </details>
@@ -411,8 +413,8 @@ uma vez manualmente para testar.</div>
           <p>Um prompt só. Ele pergunta quais categorias você quer ver e a partir de quantos dias quer ser lembrada, lê os últimos dias da caixa e cria o painel.</p>
           <details class="prompt-toggle" open><summary>Abrir o prompt · meus e-mails</summary>
 <div class="copy-block"><span class="label">Prompt · cole no claude.ai</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Quero acrescentar a seção "e-mails" ao meu painel "Meu dia", que já
-está publicado aqui: [cole o link do artefato]. Não mexa nas outras
-seções.
+está publicado (o link está nas instruções do projeto; se não
+estiver, é este: [cole o link]). Não mexa nas outras seções.
 
 Antes de montar, me faça NO MÁXIMO 3 perguntas para entender como eu
 vou usar:
@@ -546,8 +548,8 @@ uma vez manualmente para testar.</div>
           <p>Um prompt só. Ele pergunta o que você quer ver de cada compromisso e até onde quer enxergar, lê a agenda e cria o painel do dia.</p>
           <details class="prompt-toggle" open><summary>Abrir o prompt · meu dia</summary>
 <div class="copy-block"><span class="label">Prompt · cole no claude.ai</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Quero acrescentar a seção "agenda" ao meu painel "Meu dia", que já
-está publicado aqui: [cole o link do artefato]. Não mexa nas outras
-seções.
+está publicado (o link está nas instruções do projeto; se não
+estiver, é este: [cole o link]). Não mexa nas outras seções.
 
 Antes de montar, me faça NO MÁXIMO 3 perguntas para entender como eu
 vou usar:
@@ -675,8 +677,8 @@ uma vez manualmente para testar.</div>
           <p>Um prompt só. Ele pergunta de onde vêm as suas tarefas e como você gosta de ver, pede a sua lista, complementa com o e-mail se houver, e cria o painel.</p>
           <details class="prompt-toggle" open><summary>Abrir o prompt · meus to-dos</summary>
 <div class="copy-block"><span class="label">Prompt · cole no claude.ai</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Quero acrescentar a seção "to-dos" ao meu painel "Meu dia", que já
-está publicado aqui: [cole o link do artefato]. Não mexa nas outras
-seções.
+está publicado (o link está nas instruções do projeto; se não
+estiver, é este: [cole o link]). Não mexa nas outras seções.
 
 Antes de montar, me faça NO MÁXIMO 3 perguntas para entender como eu
 vou usar:
@@ -812,8 +814,8 @@ uma vez manualmente para testar.</div>
           <p>Um prompt só. Ele pergunta o que você quer guardar de cada reunião, lê as últimas pelo conector e cria o painel. Sem conector, você conta cada reunião em cinco linhas e ele monta do mesmo jeito.</p>
           <details class="prompt-toggle" open><summary>Abrir o prompt · minhas reuniões</summary>
 <div class="copy-block"><span class="label">Prompt · cole no claude.ai</span><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>Quero acrescentar a seção "reuniões" ao meu painel "Meu dia", que já
-está publicado aqui: [cole o link do artefato]. Não mexa nas outras
-seções.
+está publicado (o link está nas instruções do projeto; se não
+estiver, é este: [cole o link]). Não mexa nas outras seções.
 
 Antes de montar, me faça NO MÁXIMO 3 perguntas para entender como eu
 vou usar:
